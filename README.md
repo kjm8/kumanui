@@ -55,10 +55,10 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 ## Terminal Colors
 - **Background**: KumaBlack `#00062E`
 - **Text**: KumaWhite `#F7F7F7`
-- **Bold Text**: `#FFFFFF` (same as Light White)
+- **Bold Text**: Light White `#FFFFFF`
 - **Selection**: KumaYellow `#FFDD00` at 25% opacity
 - **Cursor**: KumaYellow `#FFDD00` at 50% opacity
-
+- **ANSI Colors**: Base-tier colors for standard ANSI colors (0-7), and light-tier colors for bright ANSI colors (8-15)
 
 ## License
 Released under the MIT License. See the [LICENSE](LICENSE) file for details.
