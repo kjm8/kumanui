@@ -9,7 +9,7 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 
 | 🎨 | Name        | Hex       | RGB           | HSL            |
 |---|-------------|-----------|---------------|----------------|
-| <img src="_assets/swatches/00062E.svg" width="12" height="12" alt="#00062E" /> | KumaBlack   | `#00062E` | 0, 6, 46      | 232°, 100%, 9% |
+| <img src="_assets/swatches/101218.svg" width="12" height="12" alt="#101218" /> | KumaBlack   | `#101218` | 16, 18, 24    | 225°, 20%, 8%  |
 | <img src="_assets/swatches/F7F7F7.svg" width="12" height="12" alt="#F7F7F7" /> | KumaWhite   | `#F7F7F7` | 247, 247, 247 | 0°, 0%, 97%    |
 | <img src="_assets/swatches/FFDD00.svg" width="12" height="12" alt="#FFDD00" /> | KumaYellow  | `#FFDD00` | 255, 221, 0   | 52°, 100%, 50% |
 | <img src="_assets/swatches/553322.svg" width="12" height="12" alt="#553322" /> | KumaBrown   | `#553322` | 85, 51, 34    | 20°, 43%, 23%  |
@@ -53,7 +53,7 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 
 
 ## Terminal Colors
-- **Background**: KumaBlack `#00062E`
+- **Background**: KumaBlack `#101218`
 - **Text**: KumaWhite `#F7F7F7`
 - **Bold Text**: Light White `#FFFFFF`
 - **Selection**: KumaYellow `#FFDD00` at 25% opacity
