@@ -49,7 +49,7 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 | <img src="_assets/swatches/062D79.svg" width="12" height="12" alt="#062D79" /> | Dark  | Blue     | `#062D79` | 6, 45, 121    | 220°, 90%, 25% |
 | <img src="_assets/swatches/790679.svg" width="12" height="12" alt="#790679" /> | Dark  | Magenta  | `#790679` | 121, 6, 121   | 300°, 90%, 25% |
 | <img src="_assets/swatches/067979.svg" width="12" height="12" alt="#067979" /> | Dark  | Cyan     | `#067979` | 6, 121, 121   | 180°, 90%, 25% |
-| <img src="_assets/swatches/665800.svg" width="12" height="12" alt="#665800" /> | Dark  | Yellow   | `#665800` | 102, 88, 0    | 52°, 100%, 20% |
+| <img src="_assets/swatches/806F00.svg" width="12" height="12" alt="#806F00" /> | Dark  | Yellow   | `#806F00` | 128, 111, 0   | 52°, 100%, 25% |
 
 
 ## Terminal Colors
