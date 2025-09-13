@@ -5,6 +5,21 @@
 Kumanui is a color scheme and design palette inspired by a beloved yellow bear plushie. It is crafted to provide a crisp, clean, and accessible visual experience across terminals, the web, and UI design. Kumanui emphasizes **high contrast for productivity** while keeping a **soft, friendly identity**.
 
 
+## Kumanui in Motion
+
+See how Kumanui looks and feels in practice.
+
+### Terminals
+
+- macOS Terminal profile: [Kumanui.terminal](dist/macos-terminal/Kumanui.terminal)
+
+_Screenshots coming soon_
+
+### Websites
+
+- [KJM.ONE](https://www.kjm.one/) — Kumanui-based design
+
+
 ## Palette
 
 <!-- BEGIN:COLORS (generated from tokens/colors.yaml) -->
