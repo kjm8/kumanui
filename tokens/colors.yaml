@@ -59,26 +59,25 @@ semantics:
     boldText:   { value: "{palette.white.light}", type: color }
     selection:  { value: "{palette.brand.KumaYellow}", alpha: 0.25, type: color }
     cursor:     { value: "{palette.brand.KumaYellow}", alpha: 0.5, type: color }
+    ansi:
+      # Standard ANSI (0-7): Base tier
+      standard:
+        black:   { value: "{palette.black.base}", type: color }
+        red:     { value: "{palette.red.base}", type: color }
+        green:   { value: "{palette.green.base}", type: color }
+        yellow:  { value: "{palette.yellow.base}", type: color }
+        blue:    { value: "{palette.blue.base}", type: color }
+        magenta: { value: "{palette.magenta.base}", type: color }
+        cyan:    { value: "{palette.cyan.base}", type: color }
+        white:   { value: "{palette.white.base}", type: color }
 
-  ansi:
-    # Standard ANSI (0-7): Base tier
-    standard:
-      black:   { value: "{palette.black.base}", type: color }
-      red:     { value: "{palette.red.base}", type: color }
-      green:   { value: "{palette.green.base}", type: color }
-      yellow:  { value: "{palette.yellow.base}", type: color }
-      blue:    { value: "{palette.blue.base}", type: color }
-      magenta: { value: "{palette.magenta.base}", type: color }
-      cyan:    { value: "{palette.cyan.base}", type: color }
-      white:   { value: "{palette.white.base}", type: color }
-
-    # Bright ANSI (8-15): Light tier
-    bright:
-      black:   { value: "{palette.black.light}", type: color }
-      red:     { value: "{palette.red.light}", type: color }
-      green:   { value: "{palette.green.light}", type: color }
-      yellow:  { value: "{palette.yellow.light}", type: color }
-      blue:    { value: "{palette.blue.light}", type: color }
-      magenta: { value: "{palette.magenta.light}", type: color }
-      cyan:    { value: "{palette.cyan.light}", type: color }
-      white:   { value: "{palette.white.light}", type: color }
+      # Bright ANSI (8-15): Light tier
+      bright:
+        black:   { value: "{palette.black.light}", type: color }
+        red:     { value: "{palette.red.light}", type: color }
+        green:   { value: "{palette.green.light}", type: color }
+        yellow:  { value: "{palette.yellow.light}", type: color }
+        blue:    { value: "{palette.blue.light}", type: color }
+        magenta: { value: "{palette.magenta.light}", type: color }
+        cyan:    { value: "{palette.cyan.light}", type: color }
+        white:   { value: "{palette.white.light}", type: color }
