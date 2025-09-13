@@ -6,19 +6,16 @@ meta:
   license: MIT
 
 palette:
-  brand:
-    KumaBlack:  { value: "#101218", type: color }
-    KumaWhite:  { value: "#F7F7F7", type: color }
 
   black:
-    base:  { value: "#404040", type: color }
-    light: { value: "#666666", type: color }
-    dark:  { value: "#000000", type: color }
+    base:  { value: "#202430", type: color }
+    light: { value: "#404860", type: color }
+    dark:  { value: "#101218", type: color }
 
   white:
-    base:  { value: "#D9D9D9", type: color }
-    light: { value: "#FFFFFF", type: color }
-    dark:  { value: "#999999", type: color }
+    base:  { value: "#E3E3E9", type: color }
+    light: { value: "#F6F6F9", type: color }
+    dark:  { value: "#C0C0CC", type: color }
 
   red:
     base:  { value: "#EB4747", type: color }
@@ -52,8 +49,8 @@ palette:
 
 semantics:
   terminal:
-    background: { value: "{palette.brand.KumaBlack}", type: color }
-    text:       { value: "{palette.brand.KumaWhite}", type: color }
+    background: { value: "{palette.black.dark}", type: color }
+    text:       { value: "{palette.white.base}", type: color }
     boldText:   { value: "{palette.white.light}", type: color }
     selection:  { value: "{palette.yellow.base}", alpha: 0.25, type: color }
     cursor:     { value: "{palette.yellow.base}", alpha: 0.5, type: color }
