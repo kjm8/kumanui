@@ -9,8 +9,6 @@ palette:
   brand:
     KumaBlack:  { value: "#101218", type: color }
     KumaWhite:  { value: "#F7F7F7", type: color }
-    KumaYellow: { value: "#FFDD00", type: color }
-    KumaCyan:   { value: "#00DDFF", type: color }
 
   black:
     base:  { value: "#404040", type: color }
@@ -57,8 +55,8 @@ semantics:
     background: { value: "{palette.brand.KumaBlack}", type: color }
     text:       { value: "{palette.brand.KumaWhite}", type: color }
     boldText:   { value: "{palette.white.light}", type: color }
-    selection:  { value: "{palette.brand.KumaYellow}", alpha: 0.25, type: color }
-    cursor:     { value: "{palette.brand.KumaYellow}", alpha: 0.5, type: color }
+    selection:  { value: "{palette.yellow.base}", alpha: 0.25, type: color }
+    cursor:     { value: "{palette.yellow.base}", alpha: 0.5, type: color }
     ansi:
       # Standard ANSI (0-7): Base tier
       standard:

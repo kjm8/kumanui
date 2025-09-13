@@ -100,7 +100,8 @@ def color_entry_to_hex(tokens: dict, entry: dict) -> str:
 
 def render_primary(tokens: dict) -> str:
     brand = tokens['palette']['brand']
-    order = ['KumaBlack', 'KumaWhite', 'KumaYellow', 'KumaCyan']
+    # Only KumaBlack and KumaWhite remain as brand colors
+    order = [name for name in ['KumaBlack', 'KumaWhite'] if name in brand]
     rows = [
         "| 🎨 | Name | Hex | RGB | HSL |",
         "|---|------|-----|-----|-----|",
@@ -183,8 +184,17 @@ def render_terminal(tokens: dict) -> str:
         name = ''
         base_hex = ''
         if isinstance(val, str) and val.startswith('{'):
-            # extract last path segment for name
-            name = val.strip('{}').split('.')[-1]
+            # derive a friendly name from the reference path
+            parts = val.strip('{}').split('.')
+            # palette.<hue>.<tier> -> "Base/Light/Dark Hue"
+            if len(parts) >= 3 and parts[0] == 'palette' and parts[2] in ('base', 'light', 'dark'):
+                tier_map = {'base': 'Base', 'light': 'Light', 'dark': 'Dark'}
+                hue = parts[1].capitalize()
+                tier = tier_map.get(parts[2], parts[2].capitalize())
+                name = f"{tier} {hue}"
+            else:
+                # fallback to last segment
+                name = parts[-1]
             refd = resolve_ref(tokens, val)
             if refd:
                 base_hex = refd['value'].upper()

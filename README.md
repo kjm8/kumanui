@@ -12,8 +12,6 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 |---|------|-----|-----|-----|
 | <img src="_assets/swatches/101218.svg" width="12" height="12" alt="#101218" /> | KumaBlack  | `#101218` | 16, 18, 24 | 225°, 20%, 8% |
 | <img src="_assets/swatches/F7F7F7.svg" width="12" height="12" alt="#F7F7F7" /> | KumaWhite  | `#F7F7F7` | 247, 247, 247 | 0°, 0%, 97% |
-| <img src="_assets/swatches/FFDD00.svg" width="12" height="12" alt="#FFDD00" /> | KumaYellow | `#FFDD00` | 255, 221, 0 | 52°, 100%, 50% |
-| <img src="_assets/swatches/00DDFF.svg" width="12" height="12" alt="#00DDFF" /> | KumaCyan   | `#00DDFF` | 0, 221, 255 | 188°, 100%, 50% |
 <!-- END:COLORS:PRIMARY -->
 
 
@@ -64,8 +62,8 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 - **Background**: KumaBlack `#101218`
 - **Text**: KumaWhite `#F7F7F7`
 - **Bold Text**: Light White `#FFFFFF`
-- **Selection**: KumaYellow `#FFDD00` at 25% opacity
-- **Cursor**: KumaYellow `#FFDD00` at 50% opacity
+- **Selection**: Base Yellow `#FFDD00` at 25% opacity
+- **Cursor**: Base Yellow `#FFDD00` at 50% opacity
 - **ANSI Colors**: Base-tier colors for standard ANSI colors (0-7), and light-tier colors for bright ANSI colors (8-15)
 <!-- END:TERMINAL -->
 
