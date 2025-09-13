@@ -26,7 +26,7 @@ except Exception:
     sys.exit(1)
 
 try:
-    from AppKit import NSColor  # type: ignore
+    from AppKit import NSColor, NSFont  # type: ignore
     from Foundation import NSKeyedArchiver  # type: ignore
 except Exception:
     print("ERROR: PyObjC not installed. Install with: pip3 install pyobjc", file=sys.stderr)
@@ -35,6 +35,10 @@ except Exception:
 
 ROOT = Path(__file__).resolve().parents[2]
 TOKENS_PATH = ROOT / "tokens/colors.yaml"
+
+# Embedded default font configuration for simplicity
+DEFAULT_FONT_NAME = "Menlo"
+DEFAULT_FONT_SIZE = 12.0
 
 
 def load_tokens(path: Path) -> dict:
@@ -65,6 +69,29 @@ def color_entry_to_hex(tokens: dict, entry: dict) -> str:
     raise ValueError(f"Unsupported color value: {val}")
 
 
+def color_entry_to_rgba(tokens: dict, entry: dict) -> tuple[float, float, float, float]:
+    """Resolve a color token entry to RGBA floats in [0,1].
+
+    Honors an `alpha` on the entry itself; if absent, will inherit from a
+    referenced token if present, otherwise defaults to 1.0.
+    """
+    a: float = float(entry.get('alpha', 1.0))
+    hex_source = entry.get('value')
+    if isinstance(hex_source, str) and not hex_source.startswith('#'):
+        refd = resolve_ref(tokens, hex_source)
+        if refd:
+            if 'alpha' in refd and 'alpha' not in entry:
+                try:
+                    a = float(refd['alpha'])
+                except Exception:
+                    a = 1.0
+            hex_source = refd.get('value', hex_source)
+    if isinstance(hex_source, str) and hex_source.startswith('#'):
+        r, g, b = hex_to_rgb01(hex_source)
+        return (r, g, b, a)
+    raise ValueError(f"Unsupported color value: {hex_source}")
+
+
 def hex_to_rgb01(hex_str: str) -> tuple[float, float, float]:
     s = hex_str.strip().lstrip('#')
     if len(s) not in (6, 8):
@@ -76,11 +103,39 @@ def hex_to_rgb01(hex_str: str) -> tuple[float, float, float]:
 
 
 def archive_color_rgb(r: float, g: float, b: float, a: float = 1.0) -> bytes:
-    """Return NSKeyedArchiver bytes for an NSColor in calibrated RGB space."""
-    color = NSColor.colorWithCalibratedRed_green_blue_alpha_(r, g, b, a)
+    """Return NSKeyedArchiver bytes for an NSColor using sRGB color space.
+
+    Falls back to calibrated RGB if sRGB initializer is unavailable.
+    """
+    # Prefer sRGB to match token color space and ensure consistent rendering
+    if hasattr(NSColor, 'colorWithSRGBRed_green_blue_alpha_'):
+        color = NSColor.colorWithSRGBRed_green_blue_alpha_(r, g, b, a)
+    else:
+        # Fallback for older macOS versions
+        color = NSColor.colorWithCalibratedRed_green_blue_alpha_(r, g, b, a)
     # Use non-secure coding for broader compatibility with Terminal imports
     data = NSKeyedArchiver.archivedDataWithRootObject_(color)
     # Convert to Python bytes for plistlib.Data
+    return bytes(data)
+
+
+def archive_font(name: str, size: float) -> bytes:
+    """Return NSKeyedArchiver bytes for an NSFont with given name and size.
+
+    Falls back to Menlo if the requested font cannot be created.
+    """
+    font = NSFont.fontWithName_size_(name, float(size))
+    # Try common aliases/PostScript names for SF Mono if initial lookup fails
+    if font is None and name.lower().startswith("sf mono"):
+        for alt in ("SF Mono", "SFMono-Regular"):
+            font = NSFont.fontWithName_size_(alt, float(size))
+            if font is not None:
+                break
+    if font is None:
+        # Fallback to a common monospaced font and warn
+        print(f"WARN: Font '{name}' not found. Falling back to Menlo {size}pt.", file=sys.stderr)
+        font = NSFont.fontWithName_size_("Menlo", float(size))
+    data = NSKeyedArchiver.archivedDataWithRootObject_(font)
     return bytes(data)
 
 
@@ -103,16 +158,33 @@ def build_profile(tokens: dict) -> dict:
         # plistlib will serialize bytes as <data> (base64) in XML plists
         return archive_color_rgb(r, g, b, 1.0)
 
+    def d_entry_with_alpha(entry: dict) -> bytes:
+        r, g, b, a = color_entry_to_rgba(tokens, entry)
+        return archive_color_rgb(r, g, b, a)
+
     profile: dict[str, object] = {
         "name": "Kumanui",
         # Core color keys
         "BackgroundColor": d(bg_hex),
         "TextColor": d(fg_hex),
         "TextBoldColor": d(bold_hex),
-        "SelectionColor": d(sel_hex),  # Terminal doesn't support alpha; using opaque
-        "CursorColor": d(cur_hex),
+        # Honor alpha on selection/cursor if provided by tokens
+        "SelectionColor": d_entry_with_alpha(term['selection']),
+        "CursorColor": d_entry_with_alpha(term['cursor']),
         # Set cursor text to background for contrast
         "CursorTextColor": d(bg_hex),
+        # Window size (in character cells)
+        "columnCount": 108,
+        "rowCount": 40,
+        # Text rendering and bold behavior
+        # Enable font antialiasing and use bright colors for bold text
+        "FontAntialias": True,
+        "UseBrightBold": True,
+        # Font and spacing config
+        # Font info embedded below
+        # Height and width spacing multipliers
+        "FontHeightSpacing": 0.90,
+        "FontWidthSpacing": 1.0,
         # ANSI standard (0-7)
         "ANSIBlackColor": d(color_entry_to_hex(tokens, ansi_std['black'])),
         "ANSIRedColor": d(color_entry_to_hex(tokens, ansi_std['red'])),
@@ -134,6 +206,9 @@ def build_profile(tokens: dict) -> dict:
         # Mark type so Terminal recognizes it as a profile
         "type": "Window Settings",
     }
+
+    # Embedded font configuration
+    profile["Font"] = archive_font(DEFAULT_FONT_NAME, float(DEFAULT_FONT_SIZE))
     return profile
 
 
