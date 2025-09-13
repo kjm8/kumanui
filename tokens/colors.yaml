@@ -1,0 +1,84 @@
+meta:
+  name: Kumanui Colors
+  version: 0.0.1
+  description: Source-of-truth color tokens for the Kumanui theme
+  colorSpace: srgb
+  license: MIT
+
+palette:
+  brand:
+    KumaBlack:  { value: "#101218", type: color }
+    KumaWhite:  { value: "#F7F7F7", type: color }
+    KumaYellow: { value: "#FFDD00", type: color }
+    KumaCyan:   { value: "#00DDFF", type: color }
+
+  black:
+    base:  { value: "#404040", type: color }
+    light: { value: "#666666", type: color }
+    dark:  { value: "#000000", type: color }
+
+  white:
+    base:  { value: "#D9D9D9", type: color }
+    light: { value: "#FFFFFF", type: color }
+    dark:  { value: "#999999", type: color }
+
+  red:
+    base:  { value: "#EB4747", type: color }
+    light: { value: "#E69999", type: color }
+    dark:  { value: "#790606", type: color }
+
+  green:
+    base:  { value: "#47EB47", type: color }
+    light: { value: "#99E699", type: color }
+    dark:  { value: "#067906", type: color }
+
+  blue:
+    base:  { value: "#477EEB", type: color }
+    light: { value: "#99BDE6", type: color }
+    dark:  { value: "#062D79", type: color }
+
+  magenta:
+    base:  { value: "#EB47EB", type: color }
+    light: { value: "#E699E6", type: color }
+    dark:  { value: "#790679", type: color }
+
+  cyan:
+    base:  { value: "#00DDFF", type: color }
+    light: { value: "#75DFF0", type: color }
+    dark:  { value: "#006F80", type: color }
+
+  yellow:
+    base:  { value: "#FFDD00", type: color }
+    light: { value: "#F0DF75", type: color }
+    dark:  { value: "#806F00", type: color }
+
+semantics:
+  terminal:
+    background: { value: "{palette.brand.KumaBlack}", type: color }
+    text:       { value: "{palette.brand.KumaWhite}", type: color }
+    boldText:   { value: "{palette.white.light}", type: color }
+    selection:  { value: "{palette.brand.KumaYellow}", alpha: 0.25, type: color }
+    cursor:     { value: "{palette.brand.KumaYellow}", alpha: 0.5, type: color }
+
+  ansi:
+    # Standard ANSI (0-7): Base tier
+    standard:
+      black:   { value: "{palette.black.base}", type: color }
+      red:     { value: "{palette.red.base}", type: color }
+      green:   { value: "{palette.green.base}", type: color }
+      yellow:  { value: "{palette.yellow.base}", type: color }
+      blue:    { value: "{palette.blue.base}", type: color }
+      magenta: { value: "{palette.magenta.base}", type: color }
+      cyan:    { value: "{palette.cyan.base}", type: color }
+      white:   { value: "{palette.white.base}", type: color }
+
+    # Bright ANSI (8-15): Light tier
+    bright:
+      black:   { value: "{palette.black.light}", type: color }
+      red:     { value: "{palette.red.light}", type: color }
+      green:   { value: "{palette.green.light}", type: color }
+      yellow:  { value: "{palette.yellow.light}", type: color }
+      blue:    { value: "{palette.blue.light}", type: color }
+      magenta: { value: "{palette.magenta.light}", type: color }
+      cyan:    { value: "{palette.cyan.light}", type: color }
+      white:   { value: "{palette.white.light}", type: color }
