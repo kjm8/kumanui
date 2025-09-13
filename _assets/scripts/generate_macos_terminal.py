@@ -27,7 +27,16 @@ except Exception:
 
 try:
     from AppKit import NSColor, NSFont  # type: ignore
-    from Foundation import NSKeyedArchiver  # type: ignore
+    from Foundation import NSKeyedArchiver, NSURL  # type: ignore
+    # Optional: CoreText for registering app-bundled fonts at runtime
+    try:
+        from CoreText import (
+            CTFontManagerRegisterFontsForURL,
+            kCTFontManagerScopeProcess,
+        )  # type: ignore
+    except Exception:
+        CTFontManagerRegisterFontsForURL = None  # type: ignore
+        kCTFontManagerScopeProcess = None  # type: ignore
 except Exception:
     print("ERROR: PyObjC not installed. Install with: pip3 install pyobjc", file=sys.stderr)
     sys.exit(1)
@@ -37,7 +46,7 @@ ROOT = Path(__file__).resolve().parents[2]
 TOKENS_PATH = ROOT / "tokens/colors.yaml"
 
 # Embedded default font configuration for simplicity
-DEFAULT_FONT_NAME = "Menlo"
+DEFAULT_FONT_NAME = "SF Mono Terminal"
 DEFAULT_FONT_SIZE = 12.0
 
 
@@ -119,12 +128,49 @@ def archive_color_rgb(r: float, g: float, b: float, a: float = 1.0) -> bytes:
     return bytes(data)
 
 
+def _register_sf_mono_terminal_if_needed(requested_name: str) -> None:
+    """Attempt to register Terminal's bundled SF Mono font for this process.
+
+    Terminal.app bundles its own SF Mono fonts that are not globally installed.
+    Registering them at process-scope allows NSFont lookups to succeed, so we
+    can embed the font in the .terminal profile.
+    """
+    # Only attempt if CoreText is available and the requested name looks like SF Mono
+    if CTFontManagerRegisterFontsForURL is None:
+        return
+    lower = requested_name.lower()
+    if not ("sf mono" in lower or "sfmono" in lower):
+        return
+    font_dir = "/System/Applications/Utilities/Terminal.app/Contents/Resources/Fonts"
+    # The essential faces for Terminal rendering; register if present
+    candidates = [
+        "SFMono-Terminal.ttf",
+        "SFMonoItalic-Terminal.ttf",
+    ]
+    for fname in candidates:
+        fpath = Path(font_dir) / fname
+        if not fpath.exists():
+            continue
+        try:
+            url = NSURL.fileURLWithPath_(str(fpath))
+            # Ignore errors; if registration fails we'll fall back later
+            CTFontManagerRegisterFontsForURL(url, kCTFontManagerScopeProcess, None)
+        except Exception:
+            # Silently ignore; fallback will handle missing fonts
+            pass
+
+
 def archive_font(name: str, size: float) -> bytes:
     """Return NSKeyedArchiver bytes for an NSFont with given name and size.
 
     Falls back to Menlo if the requested font cannot be created.
     """
+    # First try the requested name directly
     font = NSFont.fontWithName_size_(name, float(size))
+    # If not found, and the name suggests SF Mono, try registering Terminal's bundled fonts
+    if font is None:
+        _register_sf_mono_terminal_if_needed(name)
+        font = NSFont.fontWithName_size_(name, float(size))
     # Try common aliases/PostScript names for SF Mono if initial lookup fails
     if font is None and name.lower().startswith("sf mono"):
         for alt in ("SF Mono", "SFMono-Regular"):
@@ -139,7 +185,7 @@ def archive_font(name: str, size: float) -> bytes:
     return bytes(data)
 
 
-def build_profile(tokens: dict) -> dict:
+def build_profile(tokens: dict, font_name: str, font_size: float) -> dict:
     term = tokens['semantics']['terminal']
 
     # Core colors
@@ -208,17 +254,19 @@ def build_profile(tokens: dict) -> dict:
     }
 
     # Embedded font configuration
-    profile["Font"] = archive_font(DEFAULT_FONT_NAME, float(DEFAULT_FONT_SIZE))
+    profile["Font"] = archive_font(font_name, float(font_size))
     return profile
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Generate macOS Terminal .terminal profile from tokens/colors.yaml")
     ap.add_argument("out", help="Output path (.terminal) or '-' for stdout")
+    ap.add_argument("--font-name", default=DEFAULT_FONT_NAME, help="Font name or PostScript name (e.g. 'SF Mono' or 'SFMono-Regular')")
+    ap.add_argument("--font-size", type=float, default=DEFAULT_FONT_SIZE, help="Font size in points")
     args = ap.parse_args()
 
     tokens = load_tokens(TOKENS_PATH)
-    profile = build_profile(tokens)
+    profile = build_profile(tokens, args.font_name, args.font_size)
 
     if args.out == "-":
         plistlib.dump(profile, sys.stdout.buffer, fmt=plistlib.FMT_XML)
