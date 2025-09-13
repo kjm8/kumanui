@@ -25,3 +25,33 @@
   --kumanui-cyan-light: #75DFF0;
   --kumanui-cyan-dark: #005866;
 }
+
+:root, [data-theme='light'] {
+  --kumanui-web-background: var(--kumanui-white-light);
+  --kumanui-web-surface: var(--kumanui-white-base);
+  --kumanui-web-text: var(--kumanui-black-dark);
+  --kumanui-web-muted-text: var(--kumanui-black-light);
+  --kumanui-web-heading: var(--kumanui-black-dark);
+  --kumanui-web-link: var(--kumanui-cyan-dark);
+  --kumanui-web-link-hover: var(--kumanui-cyan-dark);
+  --kumanui-web-border: var(--kumanui-black-light);
+  --kumanui-web-accent: var(--kumanui-cyan-dark);
+  --kumanui-web-selection: color-mix(in srgb, var(--kumanui-cyan-base) 25%, transparent);
+  --kumanui-web-code-bg: var(--kumanui-white-base);
+  --kumanui-web-code-text: var(--kumanui-black-base);
+}
+
+[data-theme='dark'] {
+  --kumanui-web-background: var(--kumanui-black-dark);
+  --kumanui-web-surface: var(--kumanui-black-base);
+  --kumanui-web-text: var(--kumanui-white-base);
+  --kumanui-web-muted-text: var(--kumanui-white-dark);
+  --kumanui-web-heading: var(--kumanui-white-base);
+  --kumanui-web-link: var(--kumanui-yellow-base);
+  --kumanui-web-link-hover: var(--kumanui-yellow-base);
+  --kumanui-web-border: var(--kumanui-white-dark);
+  --kumanui-web-accent: var(--kumanui-yellow-base);
+  --kumanui-web-selection: color-mix(in srgb, var(--kumanui-yellow-base) 25%, transparent);
+  --kumanui-web-code-bg: var(--kumanui-black-base);
+  --kumanui-web-code-text: var(--kumanui-white-base);
+}

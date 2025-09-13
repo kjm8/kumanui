@@ -212,6 +212,63 @@ def render_terminal(tokens: dict) -> str:
 # ANSI note is included in render_terminal(); no separate renderer needed.
 
 
+def render_web(tokens: dict) -> str:
+    web = tokens.get('semantics', {}).get('web', {})
+
+    def friendly_name(entry: dict, fallback: str) -> str:
+        val = entry.get('value', '')
+        if isinstance(val, str) and val.startswith('{'):
+            parts = val.strip('{}').split('.')
+            if len(parts) >= 3 and parts[0] == 'palette' and parts[2] in ('base', 'light', 'dark'):
+                tier_map = {'base': 'Base', 'light': 'Light', 'dark': 'Dark'}
+                return f"{tier_map.get(parts[2], parts[2].capitalize())} {parts[1].capitalize()}"
+        return fallback
+
+    def named(entry: dict, fallback: str) -> str:
+        name = friendly_name(entry, fallback)
+        hexv = color_entry_to_hex(tokens, entry)
+        return f"{name} `{hexv}`"
+
+    def named_alpha(entry: dict, fallback: str) -> str:
+        name = friendly_name(entry, fallback)
+        hexv = color_entry_to_hex(tokens, entry)
+        alpha = float(entry.get('alpha', 1))
+        pct = int(round(alpha * 100))
+        return f"{name} `{hexv}` at {pct}% opacity"
+
+    lines: list[str] = []
+    if isinstance(web.get('light'), dict):
+        l = web['light']
+        lines.append("### Light Mode")
+        lines.append(f"- Background: {named(l['background'], 'Background')}")
+        lines.append(f"- Surface: {named(l['surface'], 'Surface')}")
+        lines.append(f"- Text: {named(l['text'], 'Text')}")
+        lines.append(f"- Muted Text: {named(l['mutedText'], 'Muted Text')}")
+        lines.append(f"- Heading: {named(l['heading'], 'Heading')}")
+        lines.append(f"- Link: {named(l['link'], 'Link')}")
+        lines.append(f"- Link Hover: {named(l['linkHover'], 'Link Hover')}")
+        lines.append(f"- Border: {named(l['border'], 'Border')}")
+        lines.append(f"- Accent: {named(l['accent'], 'Accent')}")
+        lines.append(f"- Selection: {named_alpha(l['selection'], 'Selection')}")
+        lines.append("")
+
+    if isinstance(web.get('dark'), dict):
+        d = web['dark']
+        lines.append("### Dark Mode")
+        lines.append(f"- Background: {named(d['background'], 'Background')}")
+        lines.append(f"- Surface: {named(d['surface'], 'Surface')}")
+        lines.append(f"- Text: {named(d['text'], 'Text')}")
+        lines.append(f"- Muted Text: {named(d['mutedText'], 'Muted Text')}")
+        lines.append(f"- Heading: {named(d['heading'], 'Heading')}")
+        lines.append(f"- Link: {named(d['link'], 'Link')}")
+        lines.append(f"- Link Hover: {named(d['linkHover'], 'Link Hover')}")
+        lines.append(f"- Border: {named(d['border'], 'Border')}")
+        lines.append(f"- Accent: {named(d['accent'], 'Accent')}")
+        lines.append(f"- Selection: {named_alpha(d['selection'], 'Selection')}")
+
+    return "\n".join(lines)
+
+
 def replace_block(text: str, begin: str, end: str, payload: str) -> str:
     pattern = re.compile(rf"(<!--\s*{re.escape(begin)}\s*-->)(.*?)(<!--\s*{re.escape(end)}\s*-->)", re.DOTALL)
     repl = f"<!-- {begin} -->\n{payload}\n<!-- {end} -->"
@@ -234,6 +291,8 @@ def main() -> int:
     readme = README_PATH.read_text(encoding='utf-8')
     readme = replace_block(readme, 'BEGIN:COLORS (generated from tokens/colors.yaml)', 'END:COLORS', tiers_md)
     readme = replace_block(readme, 'BEGIN:TERMINAL (generated from tokens/colors.yaml)', 'END:TERMINAL', terminal_md)
+    web_md = render_web(tokens)
+    readme = replace_block(readme, 'BEGIN:WEB (generated from tokens/colors.yaml)', 'END:WEB', web_md)
 
     current = README_PATH.read_text(encoding='utf-8')
     if args.check:

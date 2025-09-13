@@ -49,5 +49,34 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 <!-- END:TERMINAL -->
 
 
+## Web Colors
+
+<!-- BEGIN:WEB (generated from tokens/colors.yaml) -->
+### Light Mode
+- Background: Light White `#FFFFFF`
+- Surface: Base White `#EEEEEE`
+- Text: Dark Black `#101218`
+- Muted Text: Light Black `#404860`
+- Heading: Dark Black `#101218`
+- Link: Dark Cyan `#005866`
+- Link Hover: Dark Cyan `#005866`
+- Border: Light Black `#404860`
+- Accent: Dark Cyan `#005866`
+- Selection: Base Cyan `#00DDFF` at 25% opacity
+
+### Dark Mode
+- Background: Dark Black `#101218`
+- Surface: Base Black `#202430`
+- Text: Base White `#EEEEEE`
+- Muted Text: Dark White `#CCCCCC`
+- Heading: Base White `#EEEEEE`
+- Link: Base Yellow `#FFDD00`
+- Link Hover: Base Yellow `#FFDD00`
+- Border: Dark White `#CCCCCC`
+- Accent: Base Yellow `#FFDD00`
+- Selection: Base Yellow `#FFDD00` at 25% opacity
+<!-- END:WEB -->
+
+
 ## License
 Released under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -76,3 +76,35 @@ semantics:
         magenta: { value: "{palette.magenta.light}", type: color }
         cyan:    { value: "{palette.cyan.light}", type: color }
         white:   { value: "{palette.white.light}", type: color }
+
+  # Web UI semantics for light/dark modes
+  web:
+    light:
+      background: { value: "{palette.white.light}", type: color }
+      surface:    { value: "{palette.white.base}",  type: color }
+      text:       { value: "{palette.black.dark}",  type: color }
+      mutedText:  { value: "{palette.black.light}", type: color }
+      heading:    { value: "{palette.black.dark}",  type: color }
+      link:       { value: "{palette.cyan.dark}",   type: color }
+      linkHover:  { value: "{palette.cyan.dark}",   type: color }
+      border:     { value: "{palette.black.light}", type: color }
+      accent:     { value: "{palette.cyan.dark}",   type: color }
+      selection:  { value: "{palette.cyan.base}",   alpha: 0.25, type: color }
+      code:
+        bg:   { value: "{palette.white.base}",  type: color }
+        text: { value: "{palette.black.base}",  type: color }
+
+    dark:
+      background: { value: "{palette.black.dark}",  type: color }
+      surface:    { value: "{palette.black.base}",  type: color }
+      text:       { value: "{palette.white.base}",  type: color }
+      mutedText:  { value: "{palette.white.dark}",  type: color }
+      heading:    { value: "{palette.white.base}", type: color }
+      link:       { value: "{palette.yellow.base}", type: color }
+      linkHover:  { value: "{palette.yellow.base}", type: color }
+      border:     { value: "{palette.white.dark}",  type: color }
+      accent:     { value: "{palette.yellow.base}", type: color }
+      selection:  { value: "{palette.yellow.base}", alpha: 0.25, type: color }
+      code:
+        bg:   { value: "{palette.black.base}",  type: color }
+        text: { value: "{palette.white.base}",  type: color }
