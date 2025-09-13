@@ -98,23 +98,7 @@ def color_entry_to_hex(tokens: dict, entry: dict) -> str:
     raise ValueError(f"Unsupported color value: {val}")
 
 
-def render_primary(tokens: dict) -> str:
-    brand = tokens['palette']['brand']
-    # Only KumaBlack and KumaWhite remain as brand colors
-    order = [name for name in ['KumaBlack', 'KumaWhite'] if name in brand]
-    rows = [
-        "| 🎨 | Name | Hex | RGB | HSL |",
-        "|---|------|-----|-----|-----|",
-    ]
-    for name in order:
-        hexv = brand[name]['value'].upper()
-        r, g, b = hex_to_rgb(hexv)
-        h, s, l = rgb_to_hsl(r, g, b)
-        ensure_swatch(hexv)
-        rows.append(
-            f"| <img src=\"_assets/swatches/{hexv[1:]}.svg\" width=\"12\" height=\"12\" alt=\"{hexv}\" /> | {name:<10} | `{hexv}` | {r}, {g}, {b} | {h}°, {s}%, {l}% |"
-        )
-    return "\n".join(rows)
+# Primary palette block has been removed; brand colors are now consolidated
 
 
 def render_neutrals(tokens: dict) -> str:
@@ -146,7 +130,7 @@ def render_tiers(tokens: dict) -> str:
         "| 🎨 | Tier | Hue | Hex | RGB | HSL |",
         "|---|------|-----|-----|-----|-----|",
     ]
-    hues = ['red', 'green', 'blue', 'magenta', 'cyan', 'yellow']
+    hues = ['black', 'white', 'red', 'green', 'blue', 'magenta', 'cyan', 'yellow']
     tiers = [('Base', 'base'), ('Light', 'light'), ('Dark', 'dark')]
     for tier_label, tier_key in tiers:
         for hue in hues:
@@ -167,7 +151,16 @@ def render_terminal(tokens: dict) -> str:
     def name_from_entry(entry: dict, fallback: str) -> str:
         val = entry.get('value', '')
         if isinstance(val, str) and val.startswith('{'):
-            return val.strip('{}').split('.')[-1]
+            parts = val.strip('{}').split('.')
+            # palette.<hue>.<tier> -> "Tier Hue"
+            if len(parts) >= 3 and parts[0] == 'palette' and parts[2] in ('base', 'light', 'dark'):
+                tier_map = {'base': 'Base', 'light': 'Light', 'dark': 'Dark'}
+                hue = parts[1].capitalize()
+                tier = tier_map.get(parts[2], parts[2].capitalize())
+                return f"{tier} {hue}"
+            # palette.brand.<Name>
+            if len(parts) >= 3 and parts[0] == 'palette' and parts[1] == 'brand':
+                return parts[-1]
         return fallback
 
     bg_hex = color_entry_to_hex(tokens, term['background'])
@@ -234,15 +227,11 @@ def main() -> int:
 
     tokens = load_tokens(TOKENS_PATH)
 
-    primary_md = render_primary(tokens)
-    neutrals_md = render_neutrals(tokens)
     tiers_md = render_tiers(tokens)
     terminal_md = render_terminal(tokens)
 
     readme = README_PATH.read_text(encoding='utf-8')
-    readme = replace_block(readme, 'BEGIN:COLORS:PRIMARY (generated from tokens/colors.yaml)', 'END:COLORS:PRIMARY', primary_md)
-    readme = replace_block(readme, 'BEGIN:COLORS:NEUTRALS (generated from tokens/colors.yaml)', 'END:COLORS:NEUTRALS', neutrals_md)
-    readme = replace_block(readme, 'BEGIN:COLORS:TIERS (generated from tokens/colors.yaml)', 'END:COLORS:TIERS', tiers_md)
+    readme = replace_block(readme, 'BEGIN:COLORS (generated from tokens/colors.yaml)', 'END:COLORS', tiers_md)
     readme = replace_block(readme, 'BEGIN:TERMINAL (generated from tokens/colors.yaml)', 'END:TERMINAL', terminal_md)
 
     current = README_PATH.read_text(encoding='utf-8')
