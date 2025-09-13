@@ -13,39 +13,39 @@ palette:
     dark:  { value: "#101218", type: color }
 
   white:
-    base:  { value: "#E3E3E9", type: color }
-    light: { value: "#F6F6F9", type: color }
-    dark:  { value: "#C0C0CC", type: color }
+    base:  { value: "#EEEEEE", type: color }
+    light: { value: "#FFFFFF", type: color }
+    dark:  { value: "#CCCCCC", type: color }
 
   red:
-    base:  { value: "#EB4747", type: color }
-    light: { value: "#E69999", type: color }
-    dark:  { value: "#790606", type: color }
+    base:  { value: "#FF0022", type: color }
+    light: { value: "#F07586", type: color }
+    dark:  { value: "#66000E", type: color }
 
   green:
-    base:  { value: "#47EB47", type: color }
-    light: { value: "#99E699", type: color }
-    dark:  { value: "#067906", type: color }
+    base:  { value: "#00FF22", type: color }
+    light: { value: "#75F086", type: color }
+    dark:  { value: "#00660E", type: color }
 
   blue:
-    base:  { value: "#477EEB", type: color }
-    light: { value: "#99BDE6", type: color }
-    dark:  { value: "#062D79", type: color }
+    base:  { value: "#8675F0", type: color }
+    light: { value: "#A196E8", type: color }
+    dark:  { value: "#1E0E81", type: color }
 
   magenta:
-    base:  { value: "#EB47EB", type: color }
-    light: { value: "#E699E6", type: color }
-    dark:  { value: "#790679", type: color }
+    base:  { value: "#DD00FF", type: color }
+    light: { value: "#DF75F0", type: color }
+    dark:  { value: "#580066", type: color }
 
   cyan:
     base:  { value: "#00DDFF", type: color }
     light: { value: "#75DFF0", type: color }
-    dark:  { value: "#006F80", type: color }
+    dark:  { value: "#005866", type: color }
 
   yellow:
     base:  { value: "#FFDD00", type: color }
     light: { value: "#F0DF75", type: color }
-    dark:  { value: "#806F00", type: color }
+    dark:  { value: "#665800", type: color }
 
 semantics:
   terminal:

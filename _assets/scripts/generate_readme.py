@@ -127,20 +127,21 @@ def render_neutrals(tokens: dict) -> str:
 
 def render_tiers(tokens: dict) -> str:
     rows = [
-        "| 🎨 | Tier | Hue | Hex | RGB | HSL |",
-        "|---|------|-----|-----|-----|-----|",
+        "| 🎨 | Hue | Tier | Hex | RGB | HSL |",
+        "|---|-----|------|-----|-----|-----|",
     ]
-    hues = ['black', 'white', 'red', 'green', 'blue', 'magenta', 'cyan', 'yellow']
+    # Desired order by color then tier within each color
+    hues = ['black', 'white', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan']
     tiers = [('Base', 'base'), ('Light', 'light'), ('Dark', 'dark')]
-    for tier_label, tier_key in tiers:
-        for hue in hues:
+    for hue in hues:
+        for tier_label, tier_key in tiers:
             entry = tokens['palette'][hue][tier_key]
             hexv = entry['value'].upper()
             r, g, b = hex_to_rgb(hexv)
             h, s, l = rgb_to_hsl(r, g, b)
             ensure_swatch(hexv)
             rows.append(
-                f"| <img src=\"_assets/swatches/{hexv[1:]}.svg\" width=\"12\" height=\"12\" alt=\"{hexv}\" /> | {tier_label:<5} | {hue.capitalize():<8} | `{hexv}` | {r}, {g}, {b} | {h}°, {s}%, {l}% |"
+                f"| <img src=\"_assets/swatches/{hexv[1:]}.svg\" width=\"12\" height=\"12\" alt=\"{hexv}\" /> | {hue.capitalize():<8} | {tier_label:<5} | `{hexv}` | {r}, {g}, {b} | {h}°, {s}%, {l}% |"
             )
     return "\n".join(rows)
 
