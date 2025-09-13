@@ -28,9 +28,9 @@ palette:
     dark:  { value: "#00660E", type: color }
 
   blue:
-    base:  { value: "#8675F0", type: color }
-    light: { value: "#A196E8", type: color }
-    dark:  { value: "#1E0E81", type: color }
+    base:  { value: "#477EEB", type: color }
+    light: { value: "#96B1E9", type: color }
+    dark:  { value: "#0C2D6E", type: color }
 
   magenta:
     base:  { value: "#DD00FF", type: color }

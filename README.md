@@ -22,9 +22,9 @@ Kumanui is a color scheme and design palette inspired by a beloved yellow bear p
 | <img src="_assets/swatches/00FF22.svg" width="12" height="12" alt="#00FF22" /> | Green    | Base  | `#00FF22` | 0, 255, 34 | 128°, 100%, 50% |
 | <img src="_assets/swatches/75F086.svg" width="12" height="12" alt="#75F086" /> | Green    | Light | `#75F086` | 117, 240, 134 | 128°, 80%, 70% |
 | <img src="_assets/swatches/00660E.svg" width="12" height="12" alt="#00660E" /> | Green    | Dark  | `#00660E` | 0, 102, 14 | 128°, 100%, 20% |
-| <img src="_assets/swatches/8675F0.svg" width="12" height="12" alt="#8675F0" /> | Blue     | Base  | `#8675F0` | 134, 117, 240 | 248°, 80%, 70% |
-| <img src="_assets/swatches/A196E8.svg" width="12" height="12" alt="#A196E8" /> | Blue     | Light | `#A196E8` | 161, 150, 232 | 248°, 64%, 75% |
-| <img src="_assets/swatches/1E0E81.svg" width="12" height="12" alt="#1E0E81" /> | Blue     | Dark  | `#1E0E81` | 30, 14, 129 | 248°, 80%, 28% |
+| <img src="_assets/swatches/477EEB.svg" width="12" height="12" alt="#477EEB" /> | Blue     | Base  | `#477EEB` | 71, 126, 235 | 220°, 80%, 60% |
+| <img src="_assets/swatches/96B1E9.svg" width="12" height="12" alt="#96B1E9" /> | Blue     | Light | `#96B1E9` | 150, 177, 233 | 220°, 65%, 75% |
+| <img src="_assets/swatches/0C2D6E.svg" width="12" height="12" alt="#0C2D6E" /> | Blue     | Dark  | `#0C2D6E` | 12, 45, 110 | 220°, 80%, 24% |
 | <img src="_assets/swatches/FFDD00.svg" width="12" height="12" alt="#FFDD00" /> | Yellow   | Base  | `#FFDD00` | 255, 221, 0 | 52°, 100%, 50% |
 | <img src="_assets/swatches/F0DF75.svg" width="12" height="12" alt="#F0DF75" /> | Yellow   | Light | `#F0DF75` | 240, 223, 117 | 52°, 80%, 70% |
 | <img src="_assets/swatches/665800.svg" width="12" height="12" alt="#665800" /> | Yellow   | Dark  | `#665800` | 102, 88, 0 | 52°, 100%, 20% |
