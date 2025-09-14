@@ -22,7 +22,7 @@ GEN_README := _assets/scripts/generate_readme.py
 GEN_TERMINAL := _assets/scripts/generate_macos_terminal.py
 CHECK_CONTRAST := _assets/scripts/check_contrast.py
 
-.PHONY: help all css macos-terminal readme readme-check contrast clean
+.PHONY: help all css macos-terminal readme readme-check contrast demo clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS=":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -50,6 +50,9 @@ readme-check: $(GEN_README) $(TOKENS) ## Check README is in sync with tokens (CI
 
 contrast: $(CHECK_CONTRAST) $(TOKENS) ## Print WCAG contrast report for key colors
 	$(PYTHON) $(CHECK_CONTRAST)
+
+demo: ## Run terminal color demo
+	$(PYTHON) _assets/scripts/terminal_demo.py
 
 clean: ## Remove generated artifacts in dist (safe targets only)
 	@echo "[clean] Removing generated files"
