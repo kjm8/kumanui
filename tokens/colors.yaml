@@ -1,6 +1,5 @@
 meta:
   name: Kumanui Colors
-  version: 0.0.1
   description: Source-of-truth color tokens for the Kumanui theme
   colorSpace: srgb
   license: MIT
