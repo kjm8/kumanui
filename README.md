@@ -93,5 +93,11 @@ _Screenshots coming soon_
 <!-- END:WEB -->
 
 
+## Developer Guide
+
+Building and packaging instructions: see [build.md](build.md).
+
+
 ## License
+
 Released under the MIT License. See the [LICENSE](LICENSE) file for details.
