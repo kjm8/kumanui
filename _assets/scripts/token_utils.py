@@ -44,7 +44,10 @@ def color_entry_to_hex(tokens: dict, entry: dict) -> str:
 
 def color_entry_to_rgba(tokens: dict, entry: dict) -> tuple[float, float, float, float]:
     """Resolve a color token entry to RGBA floats in [0,1]."""
-    a: float = float(entry.get('alpha', 1.0))
+    try:
+        a = float(entry.get('alpha', 1.0))
+    except Exception:
+        a = 1.0
     hex_source = entry.get('value')
     if isinstance(hex_source, str) and not hex_source.startswith('#'):
         refd = resolve_ref(tokens, hex_source)
