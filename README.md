@@ -1,11 +1,17 @@
 # Kumanui Theme
 
-**Clarity with soft touch.**
+[![GitHub release](https://img.shields.io/github/v/release/kjm8/kumanui)](https://github.com/kjm8/kumanui/releases)  [![License](https://img.shields.io/github/license/kjm8/kumanui)](LICENSE)
+
+
+📦 [**Download Kumanui v0.1.0**](https://github.com/kjm8/kumanui/releases/download/v0.1.0/kumanui-0.1.0.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)
+
+
+> **Clarity with soft touch.**
 
 Kumanui is a color scheme and design palette inspired by a beloved yellow bear plushie. It is crafted to provide a crisp, clean, and accessible visual experience across terminals, the web, and UI design. Kumanui emphasizes **high contrast for productivity** while keeping a **soft, friendly identity**.
 
 
-## Kumanui in Motion
+## Usage Examples
 
 See how Kumanui looks and feels in practice.
 
@@ -93,9 +99,36 @@ See how Kumanui looks and feels in practice.
 <!-- END:WEB -->
 
 
+## Quick Start
+
+**For macOS Terminal**
+
+1. Download [Kumanui.terminal](dist/macos-terminal/Kumanui.terminal)
+2. Double-click to import into Terminal.app
+3. Set as default profile
+
+**For the web**  
+
+Kumanui supports both light/dark modes.
+
+```html
+<head>
+  <link rel="stylesheet" href="dist/web/kumanui.css">
+</head>
+```
+
+
 ## Developer Guide
 
 Building and packaging instructions: see [build.md](build.md).
+
+
+## Contributing
+
+Contributions, suggestions, and feedback are welcome!  
+- Open an [issue](https://github.com/kjm8/kumanui/issues) to report bugs or request features
+- Submit a pull request for improvements
+- Share your ideas on new use cases or resources
 
 
 ## License
