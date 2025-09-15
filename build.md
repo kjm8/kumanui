@@ -5,7 +5,7 @@ This guide is for developers and contributors who want to build generated resour
 ## Prerequisites
 
 - Python 3.10+ available as `python3` (or a local `venv` in `venv/`).
-- Install dependencies with `pip install -r requirements.txt`.
+- Install dependencies with `python3 -m pip install -r requirements.txt`.
   - Includes PyYAML for token parsing.
   - Includes PyObjC for macOS Terminal profile generation (macOS only).
 
