@@ -13,7 +13,7 @@ See how Kumanui looks and feels in practice.
 
 - macOS Terminal profile: [Kumanui.terminal](dist/macos-terminal/Kumanui.terminal)
 
-_Screenshots coming soon_
+![Kumanui theme in macOS Terminal](_assets/screenshots/ss-macos-terminal.png)
 
 ### Websites
 
