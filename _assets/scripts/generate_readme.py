@@ -15,6 +15,8 @@ import re
 import sys
 from pathlib import Path
 
+from token_utils import resolve_ref, color_entry_to_hex, hex_to_rgb
+
 try:
     import yaml  # type: ignore
 except Exception as e:
@@ -31,16 +33,6 @@ SWATCH_DIR = ROOT / "_assets/swatches"
 def load_tokens(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
-
-
-def hex_to_rgb(hex_str: str) -> tuple[int, int, int]:
-    s = hex_str.strip().lstrip('#')
-    if len(s) not in (6, 8):
-        raise ValueError(f"Unsupported hex length: {hex_str}")
-    r = int(s[0:2], 16)
-    g = int(s[2:4], 16)
-    b = int(s[4:6], 16)
-    return r, g, b
 
 
 def rgb_to_hsl(r: int, g: int, b: int) -> tuple[int, int, int]:
@@ -70,31 +62,6 @@ def ensure_swatch(hex_str: str) -> None:
         return
     svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"><rect width="12" height="12" fill="#{s}"/></svg>'
     svg_path.write_text(svg, encoding='utf-8')
-
-
-def resolve_ref(tokens: dict, ref: str) -> dict | None:
-    # Supports strings like "{palette.brand.KumaYellow}"
-    if not (ref.startswith('{') and ref.endswith('}')):
-        return None
-    path = ref[1:-1].split('.')
-    cur: object = tokens
-    for key in path:
-        if not isinstance(cur, dict) or key not in cur:
-            return None
-        cur = cur[key]
-    return cur if isinstance(cur, dict) else None
-
-
-def color_entry_to_hex(tokens: dict, entry: dict) -> str:
-    """Return hex for a color token entry. Accepts either literal hex value or a reference to another token."""
-    val = entry.get('value')
-    if isinstance(val, str):
-        if val.startswith('#'):
-            return val.upper()
-        refd = resolve_ref(tokens, val)
-        if refd and isinstance(refd.get('value'), str) and refd['value'].startswith('#'):
-            return refd['value'].upper()
-    raise ValueError(f"Unsupported color value: {val}")
 
 
 # Primary palette block has been removed; brand colors are now consolidated

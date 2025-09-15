@@ -4,26 +4,12 @@ from __future__ import annotations
 from pathlib import Path
 import yaml
 
+from token_utils import resolve_ref, hex_to_rgb
+
 ROOT = Path(__file__).resolve().parents[2]
 TOKENS_PATH = ROOT / 'tokens/colors.yaml'
 OUT_DIR = ROOT / 'dist/css'
 OUT_FILE = OUT_DIR / 'kumanui.css'
-
-
-def resolve_ref(tokens: dict, ref: str) -> dict | None:
-    if not (isinstance(ref, str) and ref.startswith('{') and ref.endswith('}')):
-        return None
-    cur: object = tokens
-    for key in ref[1:-1].split('.'):
-        if not isinstance(cur, dict) or key not in cur:
-            return None
-        cur = cur[key]
-    return cur if isinstance(cur, dict) else None
-
-
-def hex_to_rgb(hexv: str) -> tuple[int, int, int]:
-    s = hexv.lstrip('#')
-    return int(s[0:2], 16), int(s[2:4], 16), int(s[4:6], 16)
 
 
 def token_to_css_color(entry: dict, tokens: dict) -> str:

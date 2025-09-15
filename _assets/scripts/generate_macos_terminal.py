@@ -19,6 +19,13 @@ import sys
 from pathlib import Path
 import plistlib
 
+from token_utils import (
+    resolve_ref,
+    color_entry_to_hex,
+    color_entry_to_rgba,
+    hex_to_rgb01,
+)
+
 try:
     import yaml  # type: ignore
 except Exception:
@@ -53,62 +60,6 @@ DEFAULT_FONT_SIZE = 12.0
 def load_tokens(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
-
-
-def resolve_ref(tokens: dict, ref: str) -> dict | None:
-    if not (ref.startswith('{') and ref.endswith('}')):
-        return None
-    parts = ref[1:-1].split('.')
-    cur: object = tokens
-    for key in parts:
-        if not isinstance(cur, dict) or key not in cur:
-            return None
-        cur = cur[key]
-    return cur if isinstance(cur, dict) else None
-
-
-def color_entry_to_hex(tokens: dict, entry: dict) -> str:
-    val = entry.get('value')
-    if isinstance(val, str):
-        if val.startswith('#'):
-            return val.upper()
-        refd = resolve_ref(tokens, val)
-        if refd and isinstance(refd.get('value'), str) and refd['value'].startswith('#'):
-            return refd['value'].upper()
-    raise ValueError(f"Unsupported color value: {val}")
-
-
-def color_entry_to_rgba(tokens: dict, entry: dict) -> tuple[float, float, float, float]:
-    """Resolve a color token entry to RGBA floats in [0,1].
-
-    Honors an `alpha` on the entry itself; if absent, will inherit from a
-    referenced token if present, otherwise defaults to 1.0.
-    """
-    a: float = float(entry.get('alpha', 1.0))
-    hex_source = entry.get('value')
-    if isinstance(hex_source, str) and not hex_source.startswith('#'):
-        refd = resolve_ref(tokens, hex_source)
-        if refd:
-            if 'alpha' in refd and 'alpha' not in entry:
-                try:
-                    a = float(refd['alpha'])
-                except Exception:
-                    a = 1.0
-            hex_source = refd.get('value', hex_source)
-    if isinstance(hex_source, str) and hex_source.startswith('#'):
-        r, g, b = hex_to_rgb01(hex_source)
-        return (r, g, b, a)
-    raise ValueError(f"Unsupported color value: {hex_source}")
-
-
-def hex_to_rgb01(hex_str: str) -> tuple[float, float, float]:
-    s = hex_str.strip().lstrip('#')
-    if len(s) not in (6, 8):
-        raise ValueError(f"Unsupported hex length: {hex_str}")
-    r = int(s[0:2], 16) / 255.0
-    g = int(s[2:4], 16) / 255.0
-    b = int(s[4:6], 16) / 255.0
-    return (r, g, b)
 
 
 def archive_color_rgb(r: float, g: float, b: float, a: float = 1.0) -> bytes:
