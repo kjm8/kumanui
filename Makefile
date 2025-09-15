@@ -11,6 +11,7 @@ endif
 TOKENS := tokens/colors.yaml
 CSS_OUT := dist/css/kumanui.css
 TERMINAL_OUT := dist/macos-terminal/Kumanui.terminal
+DOCS := README.md build.md LICENSE
 
 # Version
 VERSION_FILE ?= VERSION
@@ -72,9 +73,19 @@ package: ## Create distributable ZIP with tokens and built resources
 	@echo "[package] Preparing package contents"
 	@rm -rf $(PKG_STAGING) $(PACKAGE_OUT)
 	@mkdir -p $(PKG_STAGING)
-	# Include tokens
+	@# Include docs
+	@cp $(DOCS) $(PKG_STAGING)/
+	@# Include assets referenced by docs
+	@echo "[package] Collecting doc assets"
+	@{ grep -E -h -o '_assets/[^"\) ]+' $(DOCS) || true; } | sort -u | while read asset; do \
+	        if [ -f "$$asset" ]; then \
+	                mkdir -p "$(PKG_STAGING)/$$(dirname $$asset)"; \
+	                cp "$$asset" "$(PKG_STAGING)/$$asset"; \
+	        fi; \
+	done
+	@# Include tokens
 	@cp -R tokens $(PKG_STAGING)/tokens
-	# Include generated resources if present
+	@# Include generated resources if present
 	@if [ -d dist/css ]; then cp -R dist/css $(PKG_STAGING)/css; fi
 	@if [ -d dist/macos-terminal ]; then cp -R dist/macos-terminal $(PKG_STAGING)/macos-terminal; fi
 	@echo "[package] Zipping -> $(PACKAGE_OUT)"

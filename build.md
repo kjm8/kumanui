@@ -32,7 +32,7 @@ This guide is for developers and contributors who want to build generated resour
 ## Packaging Details
 
 - Output ZIP: `dist/kumanui-<version>.zip`.
-- Contents: `tokens/` plus generated platform assets when present (`css/`, `macos-terminal/`).
+- Contents: essential docs (`README.md`, `build.md`, `LICENSE`), resources referenced by those docs, `tokens/`, and generated platform assets when present (`css/`, `macos-terminal/`).
 - Customize filename: `make PACKAGE_NAME=kumanui-YYYY-MM-DD.zip package`.
 
 ## Configuration
