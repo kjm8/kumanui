@@ -28,21 +28,20 @@ See how Kumanui looks and feels in practice.
 
 ## Quick Start
 
-**macOS Terminal**
+**macOS Terminal** `[macos-terminal]`
 
-1. Download [Kumanui.terminal](dist/macos-terminal/Kumanui.terminal)
-2. Double-click to import into Terminal.app
-3. Set as default profile
+1. Double-click `Kumanui.terminal` to import into Terminal.app
+2. Set as default profile
 
-**Web (CSS)**  
-
-Kumanui supports both light/dark modes.
+**Web (CSS)**  `[css]`
 
 ```html
 <head>
-  <link rel="stylesheet" href="dist/web/kumanui.css">
+  <link rel="stylesheet" href="kumanui.css">
 </head>
 ```
+
+Kumanui supports both light/dark modes.
 
 
 ## Palette
