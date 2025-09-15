@@ -26,7 +26,28 @@ See how Kumanui looks and feels in practice.
 - [KJM.ONE](https://www.kjm.one/) — Kumanui-based design
 
 
+## Quick Start
+
+**macOS Terminal**
+
+1. Download [Kumanui.terminal](dist/macos-terminal/Kumanui.terminal)
+2. Double-click to import into Terminal.app
+3. Set as default profile
+
+**Web (CSS)**  
+
+Kumanui supports both light/dark modes.
+
+```html
+<head>
+  <link rel="stylesheet" href="dist/web/kumanui.css">
+</head>
+```
+
+
 ## Palette
+
+The palette is organized by hue and tier (base, light, dark) to ensure consistent contrast and harmony across use cases.
 
 <!-- BEGIN:COLORS (generated from tokens/colors.yaml) -->
 | 🎨 | Hue | Tier | Hex | RGB | HSL |
@@ -97,25 +118,6 @@ See how Kumanui looks and feels in practice.
 - Accent: Base Yellow `#FFDD00`
 - Selection: Base Yellow `#FFDD00` at 25% opacity
 <!-- END:WEB -->
-
-
-## Quick Start
-
-**For macOS Terminal**
-
-1. Download [Kumanui.terminal](dist/macos-terminal/Kumanui.terminal)
-2. Double-click to import into Terminal.app
-3. Set as default profile
-
-**For the web**  
-
-Kumanui supports both light/dark modes.
-
-```html
-<head>
-  <link rel="stylesheet" href="dist/web/kumanui.css">
-</head>
-```
 
 
 ## Developer Guide
