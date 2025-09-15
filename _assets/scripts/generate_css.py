@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 import yaml
 
-from token_utils import resolve_ref, hex_to_rgb
+from token_utils import color_entry_to_hex, hex_to_rgb
 
 ROOT = Path(__file__).resolve().parents[2]
 TOKENS_PATH = ROOT / 'tokens/colors.yaml'
@@ -13,17 +13,8 @@ OUT_FILE = OUT_DIR / 'kumanui.css'
 
 
 def token_to_css_color(entry: dict, tokens: dict) -> str:
-    val = entry.get('value')
+    hexv = color_entry_to_hex(tokens, entry)
     alpha = entry.get('alpha')
-    hexv: str | None = None
-    if isinstance(val, str) and val.startswith('#'):
-        hexv = val.upper()
-    elif isinstance(val, str) and val.startswith('{'):
-        refd = resolve_ref(tokens, val)
-        if refd and isinstance(refd.get('value'), str) and refd['value'].startswith('#'):
-            hexv = refd['value'].upper()
-    if hexv is None:
-        raise ValueError(f"Unsupported color token value: {val}")
     if alpha is not None:
         r, g, b = hex_to_rgb(hexv)
         return f"rgba({r}, {g}, {b}, {float(alpha)})"
