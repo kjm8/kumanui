@@ -3,3 +3,4 @@
 venv/
 dist/*.zip
 dist/_package/
+AGENTS.md
