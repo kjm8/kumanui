@@ -30,8 +30,11 @@ See how Kumanui looks and feels in practice.
 
 **macOS Terminal** `[macos-terminal]`
 
-1. Double-click `Kumanui.terminal` to import into Terminal.app
-2. Set as default profile
+1. Open Terminal.app, then go to `Terminal > Settings > Profiles`
+2. Click the gear menu, choose `Import…`, and select `Kumanui.terminal`
+3. Set the imported profile as the default
+
+Note: `Kumanui.terminal` targets SF Mono Terminal, which ships with Terminal.app starting in macOS Tahoe (macOS 26). Older versions of macOS may not include this font by default, so set the profile's font manually (for example to SF Mono) and enable the “Antialias text” option in Settings if needed.
 
 **Web (CSS)**  `[css]`
 
