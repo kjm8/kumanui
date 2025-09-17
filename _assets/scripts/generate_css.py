@@ -76,12 +76,13 @@ def generate_css(tokens: dict) -> str:
     # Web semantics (light/dark)
     web = tokens.get('semantics', {}).get('web', {})
 
-    def add_web_block(mode: str, selector: str) -> None:
+    def collect_web_properties(mode: str) -> list[tuple[str, str]]:
         group = web.get(mode)
         if not isinstance(group, dict):
-            return
-        lines.append(f"{selector} {{")
-        # flat keys
+            return []
+
+        properties: list[tuple[str, str]] = []
+
         flat_keys = [
             'background', 'surface', 'text', 'mutedText', 'heading',
             'link', 'linkHover', 'border', 'accent', 'selection',
@@ -91,22 +92,46 @@ def generate_css(tokens: dict) -> str:
             if isinstance(entry, dict):
                 css_val = semantic_entry_to_css_value(entry, tokens)
                 var_name = key.replace('mutedText', 'muted-text').replace('linkHover', 'link-hover')
-                lines.append(f"  --kumanui-web-{var_name}: {css_val};")
-        # code subgroup
+                properties.append((f"--kumanui-web-{var_name}", css_val))
+
         code = group.get('code')
         if isinstance(code, dict):
             for sub in ('bg', 'text'):
                 entry = code.get(sub)
                 if isinstance(entry, dict):
                     css_val = semantic_entry_to_css_value(entry, tokens)
-                    lines.append(f"  --kumanui-web-code-{sub}: {css_val};")
+                    properties.append((f"--kumanui-web-code-{sub}", css_val))
+
+        return properties
+
+    def add_web_block(mode: str, selector: str, *, include_color_scheme: bool) -> None:
+        properties = collect_web_properties(mode)
+        if not properties:
+            return
+        lines.append(f"{selector} {{")
+        if include_color_scheme:
+            scheme = 'dark' if mode == 'dark' else 'light'
+            lines.append(f"  color-scheme: {scheme};")
+        for name, value in properties:
+            lines.append(f"  {name}: {value};")
         lines.append("}")
         lines.append("")
 
     # Emit variables for light and dark modes.
     # Attach to data-theme attribute selectors for easy toggling in apps.
-    add_web_block('light', ":root, [data-theme='light']")
-    add_web_block('dark',  "[data-theme='dark']")
+    add_web_block('light', ":root, [data-theme='light']", include_color_scheme=True)
+    add_web_block('dark',  "[data-theme='dark']", include_color_scheme=True)
+
+    # System preference fallback when no explicit theme is set.
+    dark_properties = collect_web_properties('dark')
+    if dark_properties:
+        lines.append("@media (prefers-color-scheme: dark) {")
+        lines.append("  :root:not([data-theme]) {")
+        lines.append("    color-scheme: dark;")
+        for name, value in dark_properties:
+            lines.append(f"    {name}: {value};")
+        lines.append("  }")
+        lines.append("}")
 
     return "\n".join(lines)
 

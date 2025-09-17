@@ -27,6 +27,7 @@
 }
 
 :root, [data-theme='light'] {
+  color-scheme: light;
   --kumanui-web-background: var(--kumanui-white-light);
   --kumanui-web-surface: var(--kumanui-white-base);
   --kumanui-web-text: var(--kumanui-black-dark);
@@ -42,6 +43,7 @@
 }
 
 [data-theme='dark'] {
+  color-scheme: dark;
   --kumanui-web-background: var(--kumanui-black-dark);
   --kumanui-web-surface: var(--kumanui-black-base);
   --kumanui-web-text: var(--kumanui-white-base);
@@ -54,4 +56,22 @@
   --kumanui-web-selection: color-mix(in srgb, var(--kumanui-yellow-base) 25%, transparent);
   --kumanui-web-code-bg: var(--kumanui-black-base);
   --kumanui-web-code-text: var(--kumanui-white-base);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --kumanui-web-background: var(--kumanui-black-dark);
+    --kumanui-web-surface: var(--kumanui-black-base);
+    --kumanui-web-text: var(--kumanui-white-base);
+    --kumanui-web-muted-text: var(--kumanui-white-dark);
+    --kumanui-web-heading: var(--kumanui-white-base);
+    --kumanui-web-link: var(--kumanui-yellow-base);
+    --kumanui-web-link-hover: var(--kumanui-yellow-base);
+    --kumanui-web-border: var(--kumanui-white-dark);
+    --kumanui-web-accent: var(--kumanui-yellow-base);
+    --kumanui-web-selection: color-mix(in srgb, var(--kumanui-yellow-base) 25%, transparent);
+    --kumanui-web-code-bg: var(--kumanui-black-base);
+    --kumanui-web-code-text: var(--kumanui-white-base);
+  }
 }
