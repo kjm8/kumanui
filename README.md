@@ -3,7 +3,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/kjm8/kumanui)](https://github.com/kjm8/kumanui/releases)  [![License](https://img.shields.io/github/license/kjm8/kumanui)](LICENSE)
 
 
-📦 [**Download Kumanui v0.1.0**](https://github.com/kjm8/kumanui/releases/download/v0.1.0/kumanui-0.1.0.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)
+📦 [**Download Kumanui v0.1.2**](https://github.com/kjm8/kumanui/releases/download/v0.1.2/kumanui-0.1.2.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)
 
 
 > **Clarity with soft touch.**
