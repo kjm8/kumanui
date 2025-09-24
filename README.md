@@ -1,13 +1,12 @@
 # Kumanui Theme
 
-[![GitHub release](https://img.shields.io/github/v/release/kjm8/kumanui)](https://github.com/kjm8/kumanui/releases)  [![License](https://img.shields.io/github/license/kjm8/kumanui)](LICENSE)
+[![GitHub release](https://img.shields.io/github/v/release/kjm8/kumanui)](https://github.com/kjm8/kumanui/releases) [![License](https://img.shields.io/github/license/kjm8/kumanui)](LICENSE)
 
 📦 [**Download Kumanui 0.1.2**](https://github.com/kjm8/kumanui/releases/download/v0.1.2/kumanui-0.1.2.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)
 
 ***Clarity with soft touch.***
 
 Kumanui is a color scheme and design palette inspired by a beloved yellow bear plushie. It is crafted to provide a crisp, clean, and accessible visual experience across terminals, the web, and UI design. Kumanui emphasizes **high contrast for productivity** while keeping a **soft, friendly identity**.
-
 
 ## Usage Examples
 
@@ -23,18 +22,17 @@ See how Kumanui looks and feels in practice.
 
 - [KJM.ONE](https://www.kjm.one/) — Kumanui-based design
 
-
 ## Quick Start
 
 **macOS Terminal** `[macos-terminal]`
 
 1. Open Terminal.app, then go to `Terminal > Settings > Profiles`
-2. Click the gear menu, choose `Import…`, and select `Kumanui.terminal`
-3. Set the imported profile as the default
+1. Click the gear menu, choose `Import…`, and select `Kumanui.terminal`
+1. Set the imported profile as the default
 
 Note: `Kumanui.terminal` targets SF Mono Terminal, which ships with Terminal.app starting in macOS Tahoe (macOS 26). Older versions of macOS may not include this font by default, so set the profile's font manually (for example to SF Mono) and enable the “Antialias text” option in Settings if needed.
 
-**Web (CSS)**  `[css]`
+**Web (CSS)** `[css]`
 
 ```html
 <head>
@@ -43,7 +41,6 @@ Note: `Kumanui.terminal` targets SF Mono Terminal, which ships with Terminal.app
 ```
 
 Kumanui supports both light/dark modes.
-
 
 ## Palette
 
@@ -78,7 +75,6 @@ The palette is organized by hue and tier (base, light, dark) to ensure consisten
 | <img src="_assets/swatches/005866.svg" width="12" height="12" alt="#005866" /> | Cyan     | Dark  | `#005866` | 0, 88, 102 | 188°, 100%, 20% |
 <!-- END:COLORS -->
 
-
 ## Terminal Colors
 
 <!-- BEGIN:TERMINAL (generated from tokens/colors.yaml) -->
@@ -89,7 +85,6 @@ The palette is organized by hue and tier (base, light, dark) to ensure consisten
 - **Cursor**: Base Yellow `#FFDD00` at 50% opacity
 - **ANSI Colors**: Base-tier colors for standard ANSI colors (0-7), and light-tier colors for bright ANSI colors (8-15)
 <!-- END:TERMINAL -->
-
 
 ## Web Colors
 
@@ -119,19 +114,17 @@ The palette is organized by hue and tier (base, light, dark) to ensure consisten
 - Selection: Base Yellow `#FFDD00` at 25% opacity
 <!-- END:WEB -->
 
-
 ## Developer Guide
 
 Building and packaging instructions: see [build.md](build.md).
 
-
 ## Contributing
 
-Contributions, suggestions, and feedback are welcome!  
+Contributions, suggestions, and feedback are welcome!
+
 - Open an [issue](https://github.com/kjm8/kumanui/issues) to report bugs or request features
 - Submit a pull request for improvements
 - Share your ideas on new use cases or resources
-
 
 ## License
 

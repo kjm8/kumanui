@@ -20,7 +20,9 @@ from token_utils import resolve_ref, color_entry_to_hex, hex_to_rgb
 try:
     import yaml  # type: ignore
 except Exception as e:
-    print("ERROR: PyYAML not installed. Install with: pip install pyyaml", file=sys.stderr)
+    print(
+        "ERROR: PyYAML not installed. Install with: pip install pyyaml", file=sys.stderr
+    )
     sys.exit(1)
 
 # Repo root (this file lives in _assets/scripts/)
@@ -48,9 +50,7 @@ def update_download_section(text: str, version: str) -> str:
         return text
 
     # Define the template for the download section
-    template = (
-        "📦 [**Download Kumanui {version}**](https://github.com/kjm8/kumanui/releases/download/v{version}/kumanui-{version}.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)"
-    )
+    template = "📦 [**Download Kumanui {version}**](https://github.com/kjm8/kumanui/releases/download/v{version}/kumanui-{version}.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)"
 
     # Replace the first line that matches the download section format
     lines = text.splitlines()
@@ -81,13 +81,13 @@ def rgb_to_hsl(r: int, g: int, b: int) -> tuple[int, int, int]:
 
 
 def ensure_swatch(hex_str: str) -> None:
-    s = hex_str.upper().lstrip('#')
+    s = hex_str.upper().lstrip("#")
     SWATCH_DIR.mkdir(parents=True, exist_ok=True)
     svg_path = SWATCH_DIR / f"{s}.svg"
     if svg_path.exists():
         return
     svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"><rect width="12" height="12" fill="#{s}"/></svg>'
-    svg_path.write_text(svg, encoding='utf-8')
+    svg_path.write_text(svg, encoding="utf-8")
 
 
 # Primary palette block has been removed; brand colors are now consolidated
@@ -99,20 +99,20 @@ def render_neutrals(tokens: dict) -> str:
         "|---|------|------|-----|-----|-----|",
     ]
     mapping = [
-        ("Base", "Black", tokens['palette']['black']['base']),
-        ("Base", "White", tokens['palette']['white']['base']),
-        ("Light", "Black", tokens['palette']['black']['light']),
-        ("Light", "White", tokens['palette']['white']['light']),
-        ("Dark", "Black", tokens['palette']['black']['dark']),
-        ("Dark", "White", tokens['palette']['white']['dark']),
+        ("Base", "Black", tokens["palette"]["black"]["base"]),
+        ("Base", "White", tokens["palette"]["white"]["base"]),
+        ("Light", "Black", tokens["palette"]["black"]["light"]),
+        ("Light", "White", tokens["palette"]["white"]["light"]),
+        ("Dark", "Black", tokens["palette"]["black"]["dark"]),
+        ("Dark", "White", tokens["palette"]["white"]["dark"]),
     ]
     for tier, name, entry in mapping:
-        hexv = entry['value'].upper()
+        hexv = entry["value"].upper()
         r, g, b = hex_to_rgb(hexv)
         h, s, l = rgb_to_hsl(r, g, b)
         ensure_swatch(hexv)
         rows.append(
-            f"| <img src=\"_assets/swatches/{hexv[1:]}.svg\" width=\"12\" height=\"12\" alt=\"{hexv}\" /> | {tier:<5} | {name:<5} | `{hexv}` | {r}, {g}, {b} | {h}°, {s}%, {l}% |"
+            f'| <img src="_assets/swatches/{hexv[1:]}.svg" width="12" height="12" alt="{hexv}" /> | {tier:<5} | {name:<5} | `{hexv}` | {r}, {g}, {b} | {h}°, {s}%, {l}% |'
         )
     return "\n".join(rows)
 
@@ -123,58 +123,66 @@ def render_tiers(tokens: dict) -> str:
         "|---|-----|------|-----|-----|-----|",
     ]
     # Desired order by color then tier within each color
-    hues = ['black', 'white', 'red', 'green', 'blue', 'yellow', 'magenta', 'cyan']
-    tiers = [('Base', 'base'), ('Light', 'light'), ('Dark', 'dark')]
+    hues = ["black", "white", "red", "green", "blue", "yellow", "magenta", "cyan"]
+    tiers = [("Base", "base"), ("Light", "light"), ("Dark", "dark")]
     for hue in hues:
         for tier_label, tier_key in tiers:
-            entry = tokens['palette'][hue][tier_key]
-            hexv = entry['value'].upper()
+            entry = tokens["palette"][hue][tier_key]
+            hexv = entry["value"].upper()
             r, g, b = hex_to_rgb(hexv)
             h, s, l = rgb_to_hsl(r, g, b)
             ensure_swatch(hexv)
             rows.append(
-                f"| <img src=\"_assets/swatches/{hexv[1:]}.svg\" width=\"12\" height=\"12\" alt=\"{hexv}\" /> | {hue.capitalize():<8} | {tier_label:<5} | `{hexv}` | {r}, {g}, {b} | {h}°, {s}%, {l}% |"
+                f'| <img src="_assets/swatches/{hexv[1:]}.svg" width="12" height="12" alt="{hexv}" /> | {hue.capitalize():<8} | {tier_label:<5} | `{hexv}` | {r}, {g}, {b} | {h}°, {s}%, {l}% |'
             )
     return "\n".join(rows)
 
 
 def render_terminal(tokens: dict) -> str:
-    term = tokens['semantics']['terminal']
+    term = tokens["semantics"]["terminal"]
 
     def name_from_entry(entry: dict, fallback: str) -> str:
-        val = entry.get('value', '')
-        if isinstance(val, str) and val.startswith('{'):
-            parts = val.strip('{}').split('.')
+        val = entry.get("value", "")
+        if isinstance(val, str) and val.startswith("{"):
+            parts = val.strip("{}").split(".")
             # palette.<hue>.<tier> -> "Tier Hue"
-            if len(parts) >= 3 and parts[0] == 'palette' and parts[2] in ('base', 'light', 'dark'):
-                tier_map = {'base': 'Base', 'light': 'Light', 'dark': 'Dark'}
+            if (
+                len(parts) >= 3
+                and parts[0] == "palette"
+                and parts[2] in ("base", "light", "dark")
+            ):
+                tier_map = {"base": "Base", "light": "Light", "dark": "Dark"}
                 hue = parts[1].capitalize()
                 tier = tier_map.get(parts[2], parts[2].capitalize())
                 return f"{tier} {hue}"
             # palette.brand.<Name>
-            if len(parts) >= 3 and parts[0] == 'palette' and parts[1] == 'brand':
+            if len(parts) >= 3 and parts[0] == "palette" and parts[1] == "brand":
                 return parts[-1]
         return fallback
 
-    bg_hex = color_entry_to_hex(tokens, term['background'])
-    fg_hex = color_entry_to_hex(tokens, term['text'])
-    bold_hex = color_entry_to_hex(tokens, term['boldText'])
+    bg_hex = color_entry_to_hex(tokens, term["background"])
+    fg_hex = color_entry_to_hex(tokens, term["text"])
+    bold_hex = color_entry_to_hex(tokens, term["boldText"])
 
-    bg_name = name_from_entry(term['background'], 'Background')
-    fg_name = name_from_entry(term['text'], 'Text')
+    bg_name = name_from_entry(term["background"], "Background")
+    fg_name = name_from_entry(term["text"], "Text")
 
     # selection/cursor: keep color name + base hex + opacity from alpha
     def format_named_alpha(entry: dict) -> tuple[str, str, int]:
-        val = entry.get('value', '')
-        alpha = entry.get('alpha', 1)
-        name = ''
-        base_hex = ''
-        if isinstance(val, str) and val.startswith('{'):
+        val = entry.get("value", "")
+        alpha = entry.get("alpha", 1)
+        name = ""
+        base_hex = ""
+        if isinstance(val, str) and val.startswith("{"):
             # derive a friendly name from the reference path
-            parts = val.strip('{}').split('.')
+            parts = val.strip("{}").split(".")
             # palette.<hue>.<tier> -> "Base/Light/Dark Hue"
-            if len(parts) >= 3 and parts[0] == 'palette' and parts[2] in ('base', 'light', 'dark'):
-                tier_map = {'base': 'Base', 'light': 'Light', 'dark': 'Dark'}
+            if (
+                len(parts) >= 3
+                and parts[0] == "palette"
+                and parts[2] in ("base", "light", "dark")
+            ):
+                tier_map = {"base": "Base", "light": "Light", "dark": "Dark"}
                 hue = parts[1].capitalize()
                 tier = tier_map.get(parts[2], parts[2].capitalize())
                 name = f"{tier} {hue}"
@@ -183,11 +191,11 @@ def render_terminal(tokens: dict) -> str:
                 name = parts[-1]
             refd = resolve_ref(tokens, val)
             if refd:
-                base_hex = refd['value'].upper()
-        return name or 'Color', base_hex or '#000000', int(round(float(alpha) * 100))
+                base_hex = refd["value"].upper()
+        return name or "Color", base_hex or "#000000", int(round(float(alpha) * 100))
 
-    sel_name, sel_hex, sel_op = format_named_alpha(term['selection'])
-    cur_name, cur_hex, cur_op = format_named_alpha(term['cursor'])
+    sel_name, sel_hex, sel_op = format_named_alpha(term["selection"])
+    cur_name, cur_hex, cur_op = format_named_alpha(term["cursor"])
 
     lines = [
         f"- **Background**: {bg_name} `{bg_hex}`",
@@ -197,7 +205,9 @@ def render_terminal(tokens: dict) -> str:
         f"- **Cursor**: {cur_name} `{cur_hex}` at {cur_op}% opacity",
     ]
     # Include ANSI note inline under Terminal section
-    lines.append("- **ANSI Colors**: Base-tier colors for standard ANSI colors (0-7), and light-tier colors for bright ANSI colors (8-15)")
+    lines.append(
+        "- **ANSI Colors**: Base-tier colors for standard ANSI colors (0-7), and light-tier colors for bright ANSI colors (8-15)"
+    )
     return "\n".join(lines)
 
 
@@ -205,14 +215,18 @@ def render_terminal(tokens: dict) -> str:
 
 
 def render_web(tokens: dict) -> str:
-    web = tokens.get('semantics', {}).get('web', {})
+    web = tokens.get("semantics", {}).get("web", {})
 
     def friendly_name(entry: dict, fallback: str) -> str:
-        val = entry.get('value', '')
-        if isinstance(val, str) and val.startswith('{'):
-            parts = val.strip('{}').split('.')
-            if len(parts) >= 3 and parts[0] == 'palette' and parts[2] in ('base', 'light', 'dark'):
-                tier_map = {'base': 'Base', 'light': 'Light', 'dark': 'Dark'}
+        val = entry.get("value", "")
+        if isinstance(val, str) and val.startswith("{"):
+            parts = val.strip("{}").split(".")
+            if (
+                len(parts) >= 3
+                and parts[0] == "palette"
+                and parts[2] in ("base", "light", "dark")
+            ):
+                tier_map = {"base": "Base", "light": "Light", "dark": "Dark"}
                 return f"{tier_map.get(parts[2], parts[2].capitalize())} {parts[1].capitalize()}"
         return fallback
 
@@ -224,13 +238,13 @@ def render_web(tokens: dict) -> str:
     def named_alpha(entry: dict, fallback: str) -> str:
         name = friendly_name(entry, fallback)
         hexv = color_entry_to_hex(tokens, entry)
-        alpha = float(entry.get('alpha', 1))
+        alpha = float(entry.get("alpha", 1))
         pct = int(round(alpha * 100))
         return f"{name} `{hexv}` at {pct}% opacity"
 
     lines: list[str] = []
-    if isinstance(web.get('light'), dict):
-        l = web['light']
+    if isinstance(web.get("light"), dict):
+        l = web["light"]
         lines.append("### Light Mode")
         lines.append(f"- Background: {named(l['background'], 'Background')}")
         lines.append(f"- Surface: {named(l['surface'], 'Surface')}")
@@ -244,8 +258,8 @@ def render_web(tokens: dict) -> str:
         lines.append(f"- Selection: {named_alpha(l['selection'], 'Selection')}")
         lines.append("")
 
-    if isinstance(web.get('dark'), dict):
-        d = web['dark']
+    if isinstance(web.get("dark"), dict):
+        d = web["dark"]
         lines.append("### Dark Mode")
         lines.append(f"- Background: {named(d['background'], 'Background')}")
         lines.append(f"- Surface: {named(d['surface'], 'Surface')}")
@@ -262,7 +276,10 @@ def render_web(tokens: dict) -> str:
 
 
 def replace_block(text: str, begin: str, end: str, payload: str) -> str:
-    pattern = re.compile(rf"(<!--\s*{re.escape(begin)}\s*-->)(.*?)(<!--\s*{re.escape(end)}\s*-->)", re.DOTALL)
+    pattern = re.compile(
+        rf"(<!--\s*{re.escape(begin)}\s*-->)(.*?)(<!--\s*{re.escape(end)}\s*-->)",
+        re.DOTALL,
+    )
     repl = f"<!-- {begin} -->\n{payload}\n<!-- {end} -->"
     if not pattern.search(text):
         # If markers are missing, append at the end as a fallback
@@ -271,8 +288,14 @@ def replace_block(text: str, begin: str, end: str, payload: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate README color sections from tokens/colors.yaml")
-    parser.add_argument("--check", action="store_true", help="Only check if README is up to date; exit 1 if changes are needed")
+    parser = argparse.ArgumentParser(
+        description="Generate README color sections from tokens/colors.yaml"
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Only check if README is up to date; exit 1 if changes are needed",
+    )
     args = parser.parse_args()
 
     tokens = load_tokens(TOKENS_PATH)
@@ -280,16 +303,28 @@ def main() -> int:
     tiers_md = render_tiers(tokens)
     terminal_md = render_terminal(tokens)
 
-    readme = README_PATH.read_text(encoding='utf-8')
-    readme = replace_block(readme, 'BEGIN:COLORS (generated from tokens/colors.yaml)', 'END:COLORS', tiers_md)
-    readme = replace_block(readme, 'BEGIN:TERMINAL (generated from tokens/colors.yaml)', 'END:TERMINAL', terminal_md)
+    readme = README_PATH.read_text(encoding="utf-8")
+    readme = replace_block(
+        readme,
+        "BEGIN:COLORS (generated from tokens/colors.yaml)",
+        "END:COLORS",
+        tiers_md,
+    )
+    readme = replace_block(
+        readme,
+        "BEGIN:TERMINAL (generated from tokens/colors.yaml)",
+        "END:TERMINAL",
+        terminal_md,
+    )
     web_md = render_web(tokens)
-    readme = replace_block(readme, 'BEGIN:WEB (generated from tokens/colors.yaml)', 'END:WEB', web_md)
+    readme = replace_block(
+        readme, "BEGIN:WEB (generated from tokens/colors.yaml)", "END:WEB", web_md
+    )
 
     version = load_version(VERSION_PATH)
     readme = update_download_section(readme, version)
 
-    current = README_PATH.read_text(encoding='utf-8')
+    current = README_PATH.read_text(encoding="utf-8")
     if args.check:
         if current == readme:
             print("README is up to date with tokens/colors.yaml")
@@ -298,10 +333,10 @@ def main() -> int:
             print("README is out of date with tokens/colors.yaml", file=sys.stderr)
             return 1
     else:
-        README_PATH.write_text(readme, encoding='utf-8')
+        README_PATH.write_text(readme, encoding="utf-8")
         print("README color sections regenerated from tokens/colors.yaml")
         return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

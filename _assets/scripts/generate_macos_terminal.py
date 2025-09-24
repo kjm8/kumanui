@@ -29,12 +29,16 @@ from token_utils import (
 try:
     import yaml  # type: ignore
 except Exception:
-    print("ERROR: PyYAML not installed. Install with: pip3 install pyyaml", file=sys.stderr)
+    print(
+        "ERROR: PyYAML not installed. Install with: pip3 install pyyaml",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
 try:
     from AppKit import NSColor, NSFont  # type: ignore
     from Foundation import NSKeyedArchiver, NSURL  # type: ignore
+
     # Optional: CoreText for registering app-bundled fonts at runtime
     try:
         from CoreText import (
@@ -45,7 +49,10 @@ try:
         CTFontManagerRegisterFontsForURL = None  # type: ignore
         kCTFontManagerScopeProcess = None  # type: ignore
 except Exception:
-    print("ERROR: PyObjC not installed. Install with: pip3 install pyobjc", file=sys.stderr)
+    print(
+        "ERROR: PyObjC not installed. Install with: pip3 install pyobjc",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
 
@@ -68,7 +75,7 @@ def archive_color_rgb(r: float, g: float, b: float, a: float = 1.0) -> bytes:
     Falls back to calibrated RGB if sRGB initializer is unavailable.
     """
     # Prefer sRGB to match token color space and ensure consistent rendering
-    if hasattr(NSColor, 'colorWithSRGBRed_green_blue_alpha_'):
+    if hasattr(NSColor, "colorWithSRGBRed_green_blue_alpha_"):
         color = NSColor.colorWithSRGBRed_green_blue_alpha_(r, g, b, a)
     else:
         # Fallback for older macOS versions
@@ -130,25 +137,28 @@ def archive_font(name: str, size: float) -> bytes:
                 break
     if font is None:
         # Fallback to a common monospaced font and warn
-        print(f"WARN: Font '{name}' not found. Falling back to Menlo {size}pt.", file=sys.stderr)
+        print(
+            f"WARN: Font '{name}' not found. Falling back to Menlo {size}pt.",
+            file=sys.stderr,
+        )
         font = NSFont.fontWithName_size_("Menlo", float(size))
     data = NSKeyedArchiver.archivedDataWithRootObject_(font)
     return bytes(data)
 
 
 def build_profile(tokens: dict, font_name: str, font_size: float) -> dict:
-    term = tokens['semantics']['terminal']
+    term = tokens["semantics"]["terminal"]
 
     # Core colors
-    bg_hex = color_entry_to_hex(tokens, term['background'])
-    fg_hex = color_entry_to_hex(tokens, term['text'])
-    bold_hex = color_entry_to_hex(tokens, term['boldText'])
-    sel_hex = color_entry_to_hex(tokens, term['selection'])
-    cur_hex = color_entry_to_hex(tokens, term['cursor'])
+    bg_hex = color_entry_to_hex(tokens, term["background"])
+    fg_hex = color_entry_to_hex(tokens, term["text"])
+    bold_hex = color_entry_to_hex(tokens, term["boldText"])
+    sel_hex = color_entry_to_hex(tokens, term["selection"])
+    cur_hex = color_entry_to_hex(tokens, term["cursor"])
 
     # ANSI standard and bright
-    ansi_std = term['ansi']['standard']
-    ansi_bri = term['ansi']['bright']
+    ansi_std = term["ansi"]["standard"]
+    ansi_bri = term["ansi"]["bright"]
 
     def d(hexv: str) -> bytes:
         r, g, b = hex_to_rgb01(hexv)
@@ -166,8 +176,8 @@ def build_profile(tokens: dict, font_name: str, font_size: float) -> dict:
         "TextColor": d(fg_hex),
         "TextBoldColor": d(bold_hex),
         # Honor alpha on selection/cursor if provided by tokens
-        "SelectionColor": d_entry_with_alpha(term['selection']),
-        "CursorColor": d_entry_with_alpha(term['cursor']),
+        "SelectionColor": d_entry_with_alpha(term["selection"]),
+        "CursorColor": d_entry_with_alpha(term["cursor"]),
         # Set cursor text to background for contrast
         "CursorTextColor": d(bg_hex),
         # Window size (in character cells)
@@ -183,23 +193,23 @@ def build_profile(tokens: dict, font_name: str, font_size: float) -> dict:
         "FontHeightSpacing": 0.90,
         "FontWidthSpacing": 1.0,
         # ANSI standard (0-7)
-        "ANSIBlackColor": d(color_entry_to_hex(tokens, ansi_std['black'])),
-        "ANSIRedColor": d(color_entry_to_hex(tokens, ansi_std['red'])),
-        "ANSIGreenColor": d(color_entry_to_hex(tokens, ansi_std['green'])),
-        "ANSIYellowColor": d(color_entry_to_hex(tokens, ansi_std['yellow'])),
-        "ANSIBlueColor": d(color_entry_to_hex(tokens, ansi_std['blue'])),
-        "ANSIMagentaColor": d(color_entry_to_hex(tokens, ansi_std['magenta'])),
-        "ANSICyanColor": d(color_entry_to_hex(tokens, ansi_std['cyan'])),
-        "ANSIWhiteColor": d(color_entry_to_hex(tokens, ansi_std['white'])),
+        "ANSIBlackColor": d(color_entry_to_hex(tokens, ansi_std["black"])),
+        "ANSIRedColor": d(color_entry_to_hex(tokens, ansi_std["red"])),
+        "ANSIGreenColor": d(color_entry_to_hex(tokens, ansi_std["green"])),
+        "ANSIYellowColor": d(color_entry_to_hex(tokens, ansi_std["yellow"])),
+        "ANSIBlueColor": d(color_entry_to_hex(tokens, ansi_std["blue"])),
+        "ANSIMagentaColor": d(color_entry_to_hex(tokens, ansi_std["magenta"])),
+        "ANSICyanColor": d(color_entry_to_hex(tokens, ansi_std["cyan"])),
+        "ANSIWhiteColor": d(color_entry_to_hex(tokens, ansi_std["white"])),
         # ANSI bright (8-15)
-        "ANSIBrightBlackColor": d(color_entry_to_hex(tokens, ansi_bri['black'])),
-        "ANSIBrightRedColor": d(color_entry_to_hex(tokens, ansi_bri['red'])),
-        "ANSIBrightGreenColor": d(color_entry_to_hex(tokens, ansi_bri['green'])),
-        "ANSIBrightYellowColor": d(color_entry_to_hex(tokens, ansi_bri['yellow'])),
-        "ANSIBrightBlueColor": d(color_entry_to_hex(tokens, ansi_bri['blue'])),
-        "ANSIBrightMagentaColor": d(color_entry_to_hex(tokens, ansi_bri['magenta'])),
-        "ANSIBrightCyanColor": d(color_entry_to_hex(tokens, ansi_bri['cyan'])),
-        "ANSIBrightWhiteColor": d(color_entry_to_hex(tokens, ansi_bri['white'])),
+        "ANSIBrightBlackColor": d(color_entry_to_hex(tokens, ansi_bri["black"])),
+        "ANSIBrightRedColor": d(color_entry_to_hex(tokens, ansi_bri["red"])),
+        "ANSIBrightGreenColor": d(color_entry_to_hex(tokens, ansi_bri["green"])),
+        "ANSIBrightYellowColor": d(color_entry_to_hex(tokens, ansi_bri["yellow"])),
+        "ANSIBrightBlueColor": d(color_entry_to_hex(tokens, ansi_bri["blue"])),
+        "ANSIBrightMagentaColor": d(color_entry_to_hex(tokens, ansi_bri["magenta"])),
+        "ANSIBrightCyanColor": d(color_entry_to_hex(tokens, ansi_bri["cyan"])),
+        "ANSIBrightWhiteColor": d(color_entry_to_hex(tokens, ansi_bri["white"])),
         # Mark type so Terminal recognizes it as a profile
         "type": "Window Settings",
     }
@@ -210,10 +220,18 @@ def build_profile(tokens: dict, font_name: str, font_size: float) -> dict:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Generate macOS Terminal .terminal profile from tokens/colors.yaml")
+    ap = argparse.ArgumentParser(
+        description="Generate macOS Terminal .terminal profile from tokens/colors.yaml"
+    )
     ap.add_argument("out", help="Output path (.terminal) or '-' for stdout")
-    ap.add_argument("--font-name", default=DEFAULT_FONT_NAME, help="Font name or PostScript name (e.g. 'SF Mono' or 'SFMono-Regular')")
-    ap.add_argument("--font-size", type=float, default=DEFAULT_FONT_SIZE, help="Font size in points")
+    ap.add_argument(
+        "--font-name",
+        default=DEFAULT_FONT_NAME,
+        help="Font name or PostScript name (e.g. 'SF Mono' or 'SFMono-Regular')",
+    )
+    ap.add_argument(
+        "--font-size", type=float, default=DEFAULT_FONT_SIZE, help="Font size in points"
+    )
     args = ap.parse_args()
 
     tokens = load_tokens(TOKENS_PATH)

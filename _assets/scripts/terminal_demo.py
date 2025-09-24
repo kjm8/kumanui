@@ -24,7 +24,10 @@ import sys
 try:
     import yaml  # type: ignore
 except Exception:
-    print("ERROR: PyYAML not installed. Install with: pip3 install pyyaml", file=sys.stderr)
+    print(
+        "ERROR: PyYAML not installed. Install with: pip3 install pyyaml",
+        file=sys.stderr,
+    )
     sys.exit(1)
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -65,7 +68,16 @@ def representative_hex(tokens: dict, hue: str, bright: bool) -> str:
 
 
 def hue_index(hue: str) -> int:
-    idx = {"black": 0, "red": 1, "green": 2, "yellow": 3, "blue": 4, "magenta": 5, "cyan": 6, "white": 7}
+    idx = {
+        "black": 0,
+        "red": 1,
+        "green": 2,
+        "yellow": 3,
+        "blue": 4,
+        "magenta": 5,
+        "cyan": 6,
+        "white": 7,
+    }
     return idx.get(hue, 7)
 
 
@@ -160,7 +172,7 @@ def render_banner(text: str, letter_hues: list[str]) -> str:
                 rows[r].append((False, -1, -1))
                 rows[r].append((False, -1, -1))
             for c, chpix in enumerate(pat[r]):
-                rows[r].append((chpix == '#', idx, c))
+                rows[r].append((chpix == "#", idx, c))
 
     # Colorize per column using foreground colored full blocks
     # Each pattern cell becomes two characters: '██' for '#' and '  ' for space.
@@ -226,9 +238,7 @@ def print_ansi_color_list(tokens: dict) -> None:
         row_blocks = blocks[i : i + cols]
         # Each block has exactly 3 lines
         for line_idx in range(3):
-            line = (" " * 0).join(
-                pad_ansi(b[line_idx], col_width) for b in row_blocks
-            )
+            line = (" " * 0).join(pad_ansi(b[line_idx], col_width) for b in row_blocks)
             # Insert gaps between columns by replacing single joins with gap spaces
             if len(row_blocks) > 1:
                 pieces = [pad_ansi(b[line_idx], col_width) for b in row_blocks]

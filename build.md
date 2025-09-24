@@ -40,4 +40,3 @@ This guide is for developers and contributors who want to build generated resour
 
 - macOS Terminal font: set `FONT_NAME` and `FONT_SIZE` via env or make args.
   - Example: `make macos-terminal FONT_NAME="SF Mono" FONT_SIZE=12`
-
