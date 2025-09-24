@@ -47,21 +47,18 @@ def update_download_section(text: str, version: str) -> str:
     if not version:
         return text
 
-    pattern = re.compile(
-        r"(📦 \[\*\*Download Kumanui )([^\*]+)(\*\*\]\(https://github.com/kjm8/kumanui/releases/download/v)([^/]+)(/kumanui-)([^)]+)(\.zip\) — latest release package \| 🔖 \[All releases\]\(https://github.com/kjm8/kumanui/releases\))"
+    # Define the template for the download section
+    template = (
+        "📦 [**Download Kumanui {version}**](https://github.com/kjm8/kumanui/releases/download/v{version}/kumanui-{version}.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)"
     )
 
-    def repl(match: re.Match[str]) -> str:
-        return (
-            f"{match.group(1)}{version}"
-            f"{match.group(3)}{version}"
-            f"{match.group(5)}{version}"
-            f"{match.group(7)}"
-        )
-
-    return pattern.sub(repl, text, count=1)
-
-
+    # Replace the first line that matches the download section format
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        if line.startswith("📦 [**Download Kumanui "):
+            lines[i] = template.format(version=version)
+            break
+    return "\n".join(lines)
 def rgb_to_hsl(r: int, g: int, b: int) -> tuple[int, int, int]:
     rf, gf, bf = r / 255.0, g / 255.0, b / 255.0
     mx, mn = max(rf, gf, bf), min(rf, gf, bf)
