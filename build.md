@@ -28,6 +28,7 @@ This guide is for developers and contributors who want to build generated resour
 
 - Source of truth is the file `VERSION` (first line only).
 - The package filename includes the version, e.g., `dist/kumanui-<version>.zip`.
+- Running `make readme` (or `make all`) refreshes the README download link with the version from `VERSION`.
 
 ## Packaging Details
 

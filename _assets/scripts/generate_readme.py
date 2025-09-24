@@ -27,6 +27,7 @@ except Exception as e:
 ROOT = Path(__file__).resolve().parents[2]
 TOKENS_PATH = ROOT / "tokens/colors.yaml"
 README_PATH = ROOT / "README.md"
+VERSION_PATH = ROOT / "VERSION"
 SWATCH_DIR = ROOT / "_assets/swatches"
 
 
@@ -35,6 +36,29 @@ def load_tokens(path: Path) -> dict:
         return yaml.safe_load(f)
 
 
+def load_version(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8").strip()
+    except FileNotFoundError:
+        return ""
+
+
+def update_download_section(text: str, version: str) -> str:
+    if not version:
+        return text
+
+    # Define the template for the download section
+    template = (
+        "📦 [**Download Kumanui {version}**](https://github.com/kjm8/kumanui/releases/download/v{version}/kumanui-{version}.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)"
+    )
+
+    # Replace the first line that matches the download section format
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        if line.startswith("📦 [**Download Kumanui "):
+            lines[i] = template.format(version=version)
+            break
+    return "\n".join(lines)
 def rgb_to_hsl(r: int, g: int, b: int) -> tuple[int, int, int]:
     rf, gf, bf = r / 255.0, g / 255.0, b / 255.0
     mx, mn = max(rf, gf, bf), min(rf, gf, bf)
@@ -259,6 +283,9 @@ def main() -> int:
     readme = replace_block(readme, 'BEGIN:TERMINAL (generated from tokens/colors.yaml)', 'END:TERMINAL', terminal_md)
     web_md = render_web(tokens)
     readme = replace_block(readme, 'BEGIN:WEB (generated from tokens/colors.yaml)', 'END:WEB', web_md)
+
+    version = load_version(VERSION_PATH)
+    readme = update_download_section(readme, version)
 
     current = README_PATH.read_text(encoding='utf-8')
     if args.check:
