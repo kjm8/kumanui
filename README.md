@@ -2,11 +2,9 @@
 
 [![GitHub release](https://img.shields.io/github/v/release/kjm8/kumanui)](https://github.com/kjm8/kumanui/releases)  [![License](https://img.shields.io/github/license/kjm8/kumanui)](LICENSE)
 
-
 📦 [**Download Kumanui 0.1.2**](https://github.com/kjm8/kumanui/releases/download/v0.1.2/kumanui-0.1.2.zip) — latest release package | 🔖 [All releases](https://github.com/kjm8/kumanui/releases)
 
-
-> **Clarity with soft touch.**
+***Clarity with soft touch.***
 
 Kumanui is a color scheme and design palette inspired by a beloved yellow bear plushie. It is crafted to provide a crisp, clean, and accessible visual experience across terminals, the web, and UI design. Kumanui emphasizes **high contrast for productivity** while keeping a **soft, friendly identity**.
 

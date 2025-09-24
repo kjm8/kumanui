@@ -59,6 +59,8 @@ def update_download_section(text: str, version: str) -> str:
             lines[i] = template.format(version=version)
             break
     return "\n".join(lines)
+
+
 def rgb_to_hsl(r: int, g: int, b: int) -> tuple[int, int, int]:
     rf, gf, bf = r / 255.0, g / 255.0, b / 255.0
     mx, mn = max(rf, gf, bf), min(rf, gf, bf)
